@@ -107,6 +107,11 @@ public class Button_Manager : MonoBehaviour
         Screen.fullScreen = isFullscreen;
     }
 
+    public void ButtonClick()
+    {
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.Click);
+    }
+
     public void QuitButton()
     {
         Debug.Log("Game is exiting"); 

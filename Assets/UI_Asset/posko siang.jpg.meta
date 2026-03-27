@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: bc34896b09605e54c950d4cd691b7535
+guid: 89555dcdd0e76c141be2f095fe97d3ef
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7931347610435853162
-    second: kayu hama_0
+      213: 26571194567274927
+    second: posko siang_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -97,19 +97,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -139,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: kayu hama_0
+      name: posko siang_0
       rect:
         serializedVersion: 2
-        x: 350
-        y: 213
-        width: 1247
-        height: 1379
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a6b1c2e21aec11e60800000000000000
-      internalID: 7931347610435853162
+      spriteID: fa1b0755c566e5000800000000000000
+      internalID: 26571194567274927
       vertices: []
       indices: 
       edges: []
@@ -174,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      kayu hama_0: 7931347610435853162
+      posko siang_0: 26571194567274927
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
     // untuk menaruh audio(bgm / sfx)
     [Header("---------- Audio Clip ----------")]
     public AudioClip background;
-    public AudioClip splash;
+    public AudioClip Click;
     public AudioClip gameOver;
     public AudioClip win;
     public static AudioManager Instance { get; private set; }

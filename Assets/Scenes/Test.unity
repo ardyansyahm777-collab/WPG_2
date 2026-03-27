@@ -507,7 +507,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 8147fa54beb6f6d46b5ecceb6ee9f4d9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a836dcad7d9abca4c84dde871580eca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemAsli
-  gameManager: {fileID: 0}
+  gameManager: {fileID: 317061316}
 --- !u!114 &714803998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -579,7 +579,14 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4322a3b33e5a7224994a1a29613fc8ff, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HoverHighlight
+  m_EditorClassIdentifier: Assembly-CSharp::HoverHightlight
+  mainColorRef: _MainColor
+  thicknessRef: _Thickness
+  outlineColorRef: _OutlineColor
+  activeThickness: 30
+  highlightColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  fadeDuration: 0.2
 --- !u!1 &1068262573
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,6 +734,7 @@ GameObject:
   - component: {fileID: 1204039261}
   - component: {fileID: 1204039260}
   - component: {fileID: 1204039259}
+  - component: {fileID: 1204039262}
   m_Layer: 0
   m_Name: KotakSampah
   m_TagString: TrashBin
@@ -805,7 +813,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 8147fa54beb6f6d46b5ecceb6ee9f4d9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -853,6 +861,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1204039262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204039258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4322a3b33e5a7224994a1a29613fc8ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverHightlight
+  mainColorRef: _MainColor
+  thicknessRef: _Thickness
+  outlineColorRef: _OutlineColor
+  activeThickness: 30
+  highlightColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  fadeDuration: 0.2
 --- !u!1 &1882551797
 GameObject:
   m_ObjectHideFlags: 0
