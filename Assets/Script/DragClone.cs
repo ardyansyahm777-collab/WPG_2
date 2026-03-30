@@ -70,6 +70,5 @@ public class DragClone : MonoBehaviour
         Debug.Log("Tidak ada collider di posisi ini.");
     }
 
-    Destroy(gameObject);
 }
 }

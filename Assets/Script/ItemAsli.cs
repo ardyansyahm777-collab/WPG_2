@@ -6,6 +6,8 @@ public class ItemAsli : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (!gameObject.name.Contains("(Clone)"))
+    {
         // Buat clone dari objek ini
         GameObject clone = Instantiate(gameObject, transform.position, Quaternion.identity);
 
@@ -13,7 +15,12 @@ public class ItemAsli : MonoBehaviour
         DragClone drag = clone.AddComponent<DragClone>();
         drag.gameManager = gameManager;
 
-        // Opsional: beri nama berbeda agar tidak bingung
+        // Beri nama unik agar tidak masuk ke loop if ini lagi saat diklik
         clone.name = gameObject.name + "(Clone)";
+    }
+    else 
+    {
+        Debug.Log("Ini sudah objek clone, tidak akan menduplikasi lagi.");
+    }
     }
 }
