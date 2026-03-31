@@ -71,11 +71,13 @@ public class Button_Manager : MonoBehaviour
 
     public void playButton()
     {
-        SceneManager.LoadScene("gameplay");    
+        ButtonClick();
+        SceneManager.LoadScene("GamePlay");    
     }
 
     public void settingButton()
     {
+        ButtonClick();
         if (setting != null)
             setting.SetActive(!setting.activeSelf);
     }
@@ -104,6 +106,7 @@ public class Button_Manager : MonoBehaviour
 
     public void Fullscreen(bool isFullscreen)
     {
+        ButtonClick();
         Screen.fullScreen = isFullscreen;
     }
 
@@ -114,6 +117,7 @@ public class Button_Manager : MonoBehaviour
 
     public void QuitButton()
     {
+        ButtonClick();
         Debug.Log("Game is exiting"); 
         Application.Quit();
 #if UNITY_EDITOR

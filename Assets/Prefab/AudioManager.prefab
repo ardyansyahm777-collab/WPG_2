@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 5074821551259103745}
   sfxSource: {fileID: 2641062733358413120}
-  background: {fileID: 8300000, guid: ef4e4ae24b12ef74c8706950798c2180, type: 3}
+  background: {fileID: 8300000, guid: 94a00c71bf16f6d4e8c2156922908aa8, type: 3}
   Click: {fileID: 8300000, guid: 42cebff059fa5de438a66c52a52c2393, type: 3}
   gameOver: {fileID: 0}
   win: {fileID: 0}
