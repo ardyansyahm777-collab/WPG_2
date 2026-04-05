@@ -27,6 +27,7 @@ public class AudioManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject); // Agar AudioManager tidak hancur saat pindah scene
         }
         else
         {

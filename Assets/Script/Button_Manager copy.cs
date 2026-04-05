@@ -11,6 +11,7 @@ public class Button_Manager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject setting;
     public TMP_Dropdown resolutionDropdown;
+    
 
     [Header("Audio Settings")]
     public AudioMixerSnapshot normalSnapshot;
@@ -19,7 +20,6 @@ public class Button_Manager : MonoBehaviour
     [Header("Logic")]
     private Resolution[] resolutions;
     public static bool GameIsPaused = false;
-    private bool GoMainMenu = false;
     public static Button_Manager Instance;
 
     private void Awake()
@@ -71,9 +71,17 @@ public class Button_Manager : MonoBehaviour
 
     public void playButton()
     {
-        ButtonClick();
-        SceneManager.LoadScene("GamePlay");    
+        // Kita panggil Coroutine di sini
+        ButtonClick(); // Suara klik
+    
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.musicSource.Stop(); // Matikan musik segera
+        }
+
+        SceneManager.LoadScene("GamePlay"); // Langsung
     }
+
 
     public void settingButton()
     {

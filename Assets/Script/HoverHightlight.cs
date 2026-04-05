@@ -29,20 +29,31 @@ public class HoverHightlight : MonoBehaviour, IPointerEnterHandler, IPointerExit
         Image img = GetComponent<Image>();
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
 
-        if (img != null) { targetMaterial = img.material; isUI = true; }
-        else if (sr != null) { targetMaterial = sr.material; isUI = false; }
+        if (img != null) 
+        { 
+            // Membuat instance material unik agar tidak mempengaruhi objek lain
+            img.material = new Material(img.material); 
+            targetMaterial = img.material; 
+            isUI = true; 
+        }
+        else if (sr != null) 
+        { 
+            // SpriteRenderer.material otomatis membuat instance unik
+            targetMaterial = sr.material; 
+            isUI = false; 
+        }
 
         if (targetMaterial != null)
         {
-            // Reset awal: Ketebalan 0, Warna kayu putih (normal), Warna outline disiapkan
-            targetMaterial.SetFloat(thicknessRef, 0f);
-            targetMaterial.SetColor(outlineColorRef, outlineColor);
-            
+            // Ambil warna asli SEBELUM diubah-ubah
             if (targetMaterial.HasProperty(mainColorRef))
                 originalHighlightColor = targetMaterial.GetColor(mainColorRef);
+            
+            // Paksa reset saat start agar tidak merah
+            currentHighlightColor = originalHighlightColor;
+            targetMaterial.SetFloat(thicknessRef, 0f);
+            targetMaterial.SetColor(mainColorRef, originalHighlightColor);
         }
-        
-        currentHighlightColor = originalHighlightColor;
     }
 
     // TRIGGER EVENT

@@ -1,10 +1,22 @@
 fileFormatVersion: 2
-guid: 90ffa486d86cfe34894b675c6534aafc
+guid: 5f63be231598ede489a0e2aa27e3b597
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1404028623067837608
-    second: Logo_0
+      213: 1717959649996741340
+    second: calendar_0
+  - first:
+      213: 7124085310537296089
+    second: calendar_1
+  - first:
+      213: 7850843515612383992
+    second: calendar_2
+  - first:
+      213: -7739069223202659573
+    second: calendar_3
+  - first:
+      213: -9189931873119684638
+    second: calendar_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +138,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Logo_0
+      name: calendar_0
       rect:
         serializedVersion: 2
-        x: 75
-        y: 21
-        width: 530
-        height: 295
+        x: 59
+        y: 29
+        width: 365
+        height: 451
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +153,96 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8a47074089c1c7310800000000000000
-      internalID: 1404028623067837608
+      spriteID: cda9284133b67d710800000000000000
+      internalID: 1717959649996741340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: calendar_1
+      rect:
+        serializedVersion: 2
+        x: 501
+        y: 28
+        width: 363
+        height: 453
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d8672c48d5ddd260800000000000000
+      internalID: 7124085310537296089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: calendar_2
+      rect:
+        serializedVersion: 2
+        x: 942
+        y: 29
+        width: 363
+        height: 452
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fa4147f49cc3fc60800000000000000
+      internalID: 7850843515612383992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: calendar_3
+      rect:
+        serializedVersion: 2
+        x: 1384
+        y: 29
+        width: 362
+        height: 451
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b03e8da7b8d499490800000000000000
+      internalID: -7739069223202659573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: calendar_4
+      rect:
+        serializedVersion: 2
+        x: 1824
+        y: 28
+        width: 363
+        height: 453
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e739a8d6adc67080800000000000000
+      internalID: -9189931873119684638
       vertices: []
       indices: 
       edges: []
@@ -161,7 +261,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Logo_0: 1404028623067837608
+      calendar_0: 1717959649996741340
+      calendar_1: 7124085310537296089
+      calendar_2: 7850843515612383992
+      calendar_3: -7739069223202659573
+      calendar_4: -9189931873119684638
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
