@@ -194,6 +194,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 54375945}
   m_CullTransparentMesh: 1
+--- !u!1 &90883490
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 90883491}
+  m_Layer: 0
+  m_Name: Clone_Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &90883491
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 90883490}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -943.3336, y: -534.1116, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 857882433}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &177238177 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4116396989152499189, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
@@ -512,12 +543,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4322a3b33e5a7224994a1a29613fc8ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HoverHightlight
-  mainColorRef: _MainColor
-  thicknessRef: _Thickness
-  outlineColorRef: _OutlineColor
-  activeThickness: 5
+  mainColorProp: _Color
+  thicknessProp: _Thickness
+  outlineColorProp: _OutlineColor
+  idleColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   highlightColor: {r: 0.93962264, g: 0.7526885, b: 0.24642926, a: 1}
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  activeThickness: 5
   fadeDuration: 0.2
 --- !u!114 &453690514
 MonoBehaviour:
@@ -571,6 +603,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemAsli
   gameManager: {fileID: 1967045664}
   spriteUntukClone: {fileID: -6689875914592896685, guid: 68391429c9a38cf4ebbc5b5ba33079f1, type: 3}
+  containerShow: {fileID: 90883491}
 --- !u!1 &470962060 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2764809642971769997, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
@@ -1138,6 +1171,7 @@ RectTransform:
   - {fileID: 1506852732}
   - {fileID: 930890797}
   - {fileID: 453690512}
+  - {fileID: 90883491}
   - {fileID: 470962061}
   - {fileID: 340033343}
   m_Father: {fileID: 0}
@@ -1214,12 +1248,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4322a3b33e5a7224994a1a29613fc8ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HoverHightlight
-  mainColorRef: _MainColor
-  thicknessRef: _Thickness
-  outlineColorRef: _OutlineColor
-  activeThickness: 5
+  mainColorProp: _Color
+  thicknessProp: _Thickness
+  outlineColorProp: _OutlineColor
+  idleColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   highlightColor: {r: 0.93962264, g: 0.7526885, b: 0.24642926, a: 1}
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  activeThickness: 5
   fadeDuration: 0.2
 --- !u!114 &930890799
 MonoBehaviour:
@@ -1273,6 +1308,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemAsli
   gameManager: {fileID: 1967045664}
   spriteUntukClone: {fileID: 653774981217237608, guid: adfc2bcc7eaf0b14da2d8c4c82d52780, type: 3}
+  containerShow: {fileID: 90883491}
 --- !u!1 &1016238011
 GameObject:
   m_ObjectHideFlags: 0
@@ -1784,12 +1820,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4322a3b33e5a7224994a1a29613fc8ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HoverHightlight
-  mainColorRef: _MainColor
-  thicknessRef: _Thickness
-  outlineColorRef: _OutlineColor
-  activeThickness: 5
+  mainColorProp: _Color
+  thicknessProp: _Thickness
+  outlineColorProp: _OutlineColor
+  idleColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   highlightColor: {r: 0.93962264, g: 0.7526885, b: 0.24642926, a: 1}
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  activeThickness: 5
   fadeDuration: 0.2
 --- !u!61 &1220845461
 BoxCollider2D:
@@ -2003,12 +2040,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4322a3b33e5a7224994a1a29613fc8ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HoverHightlight
-  mainColorRef: _MainColor
-  thicknessRef: _Thickness
-  outlineColorRef: _OutlineColor
-  activeThickness: 10
+  mainColorProp: _Color
+  thicknessProp: _Thickness
+  outlineColorProp: _OutlineColor
+  idleColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   highlightColor: {r: 1, g: 1, b: 1, a: 1}
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  activeThickness: 10
   fadeDuration: 0.2
 --- !u!114 &1372156734
 MonoBehaviour:
@@ -2359,12 +2397,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4322a3b33e5a7224994a1a29613fc8ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HoverHightlight
-  mainColorRef: _MainColor
-  thicknessRef: _Thickness
-  outlineColorRef: _OutlineColor
-  activeThickness: 5
+  mainColorProp: _Color
+  thicknessProp: _Thickness
+  outlineColorProp: _OutlineColor
+  idleColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   highlightColor: {r: 0.93962264, g: 0.7526885, b: 0.24642926, a: 1}
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  activeThickness: 5
   fadeDuration: 0.2
 --- !u!61 &1506852738
 BoxCollider2D:
@@ -2962,5 +3001,5 @@ SceneRoots:
   - {fileID: 857882433}
   - {fileID: 1654087879}
   - {fileID: 661971286}
-  - {fileID: 1016238013}
   - {fileID: 1967045665}
+  - {fileID: 1016238013}

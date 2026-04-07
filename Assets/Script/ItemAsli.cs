@@ -7,6 +7,7 @@ public class ItemAsli : MonoBehaviour, IPointerDownHandler
     [Header("Settings")]
     public GameManager gameManager;
     public Sprite spriteUntukClone;
+    public Transform containerShow;
 
     private void OnMouseDown()
     {
@@ -26,19 +27,28 @@ public class ItemAsli : MonoBehaviour, IPointerDownHandler
 
     private void ExecuteClone()
     {
+        if (containerShow == null) 
+        {
+            Debug.LogError("Container Show belum diisi di Inspector!");
+            return;
+        }
+
         GameObject clone = Instantiate(gameObject, transform.position, transform.rotation);
         
-        clone.transform.SetParent(transform.parent, true);
+        // Set Parent
+        clone.transform.SetParent(containerShow, true);
+        
+        // PAKSA AKTIF: Agar clone muncul meskipun 'object_show' sedang mati
+        clone.SetActive(true); 
+
         clone.transform.localScale = transform.localScale;
         clone.name = gameObject.name + "(Clone)";
 
         ApplySpriteAndSize(clone);
 
-        // Tambahkan DragClone
         DragClone drag = clone.AddComponent<DragClone>();
         drag.gameManager = gameManager;
 
-        // KUNCI: Hapus script ItemAsli di objek clone
         Destroy(clone.GetComponent<ItemAsli>());
     }
 

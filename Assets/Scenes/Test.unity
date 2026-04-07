@@ -970,7 +970,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2013965261}
   - component: {fileID: 2013965263}
-  - component: {fileID: 2013965262}
   m_Layer: 0
   m_Name: ScriptObject
   m_TagString: Untagged
@@ -993,18 +992,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2013965262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013965260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43f94304621b4e74f8e147c9f5019fbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DragScript
 --- !u!114 &2013965263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1017,6 +1004,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea6a0c00eb2b3847b2285d01552dcac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragAndDropRaycast
+  gameManager: {fileID: 317061316}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
