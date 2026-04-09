@@ -1,81 +1,43 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class DragClone : MonoBehaviour, IPointerDownHandler
+public class DragClone : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public GameManager gameManager;
-    private Vector3 offset;
-    private bool isDragging = true; 
-    private bool initialized = false;
+    public GameObject dropZone;
 
     private RectTransform rectTransform;
     private Canvas canvas;
+    private CanvasGroup canvasGroup;
 
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
+        canvasGroup = gameObject.AddComponent<CanvasGroup>();
     }
 
-    void Start()
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        // Hitung offset awal
-        offset = transform.position - GetMousePosition();
-        initialized = true;
+        canvasGroup.blocksRaycasts = false;
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnDrag(PointerEventData eventData)
     {
-        StartDragging();
+        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
     }
 
-    private void OnMouseDown()
+    public void OnEndDrag(PointerEventData eventData)
     {
-        if (!EventSystem.current.IsPointerOverGameObject()) // Pastikan tidak tertutup UI lain
+        canvasGroup.blocksRaycasts = true;
+
+        // cek apakah mouse berada di dalam DropZone
+        if (!RectTransformUtility.RectangleContainsScreenPoint(
+            dropZone.GetComponent<RectTransform>(),
+            Input.mousePosition,
+            eventData.pressEventCamera))
         {
-            StartDragging();
+            Destroy(gameObject); // hancurkan clone
         }
-    }
-
-    private void StartDragging()
-    {
-        isDragging = true;
-        offset = transform.position - GetMousePosition();
-    }
-
-    void Update()
-    {
-        if (isDragging)
-        {
-            transform.position = GetMousePosition() + offset;
-
-            // Berhenti drag saat tombol mouse dilepas
-            // initialized memastikan kita tidak tidak sengaja melepas di frame pertama saat instantiate
-            if (initialized && Input.GetMouseButtonUp(0))
-            {
-                isDragging = false;
-                // Log dihapus sesuai permintaan
-            }
-        }
-    }
-
-    private Vector3 GetMousePosition()
-    {
-        Vector3 mousePos = Input.mousePosition;
-
-        if (rectTransform != null && canvas != null)
-        {
-            if (canvas.renderMode == RenderMode.ScreenSpaceOverlay) return mousePos;
-            
-            Vector3 worldPoint;
-            RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, mousePos, canvas.worldCamera, out worldPoint);
-            return worldPoint;
-        }
-
-        float distance = Mathf.Abs(Camera.main.transform.position.z);
-        Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, distance));
-        worldMousePos.z = 0;
-        return worldMousePos;
     }
 }

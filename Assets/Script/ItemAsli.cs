@@ -48,8 +48,7 @@ public class ItemAsli : MonoBehaviour, IPointerDownHandler
 
         DragClone drag = clone.AddComponent<DragClone>();
         drag.gameManager = gameManager;
-
-        Destroy(clone.GetComponent<ItemAsli>());
+        drag.dropZone = GameObject.Find("area_bantuan");
     }
 
     private void ApplySpriteAndSize(GameObject clone)
