@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 89555dcdd0e76c141be2f095fe97d3ef
+guid: 5e0257c70f8e354418504d16fd1db38e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 26571194567274927
-    second: posko siang_0
+      213: 2120293529168832852
+    second: mouse_hover_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -24,7 +24,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -57,7 +57,7 @@ TextureImporter:
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 8
+  textureType: 7
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: posko siang_0
+      name: mouse_hover_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1920
-        height: 1080
+        width: 43
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fa1b0755c566e5000800000000000000
-      internalID: 26571194567274927
+      spriteID: 459eaa12bbbcc6d10800000000000000
+      internalID: 2120293529168832852
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      posko siang_0: 26571194567274927
+      mouse_hover_0: 2120293529168832852
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

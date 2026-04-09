@@ -56,9 +56,11 @@ public class UIManager : MonoBehaviour
         {
             // 1. Set sprite ke front saja
             frontImage.sprite = newSprite;
+            backImage.sprite = newSprite;
             
             // 2. Gunakan SetNativeSize pada front agar ukurannya pas dengan gambar asli
             frontImage.SetNativeSize();
+            backImage.SetNativeSize();
 
             // 3. Samakan ukuran RectTransform 'back' dengan 'front'
             RectTransform frontRect = frontImage.GetComponent<RectTransform>();

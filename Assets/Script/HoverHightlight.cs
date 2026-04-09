@@ -7,7 +7,7 @@ public class HoverHighlight : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 {
     [Header("Shader Property Names")]
     // Diubah menjadi string agar bisa mereferensi nama variabel di shader
-    [SerializeField] private string mainColorProp = "_MainColor"; 
+    [SerializeField] private string mainColorProp = "_                      MainColor"; 
     [SerializeField] private string thicknessProp = "_Thickness";
     [SerializeField] private string outlineColorProp = "_OutlineColor";
 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 406669eeeaea57e4da55132ffee0a62e
+guid: 83faed49fa760d9489397af6b50b4698
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7184050201866013890
-    second: PANTAI LOBBY_0
+      213: 7995725746436835114
+    second: laporan_harian_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PANTAI LOBBY_0
+      name: laporan_harian_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 3840
-        height: 2160
+        width: 396
+        height: 451
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2cc0cca889fd2b360800000000000000
-      internalID: 7184050201866013890
+      spriteID: a2700d5043686fe60800000000000000
+      internalID: 7995725746436835114
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PANTAI LOBBY_0: 7184050201866013890
+      laporan_harian_0: 7995725746436835114
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

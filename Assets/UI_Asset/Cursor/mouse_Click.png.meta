@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a895082e8bcf33741af72a89af1b04f2
+guid: a607754a573900f40ab0d9ab8c3c4e83
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1583017908918500995
-    second: PANTAI LOBBY malam_0
+      213: 1287019826710873508
+    second: mouse_Click_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -24,7 +24,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -57,7 +57,7 @@ TextureImporter:
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 8
+  textureType: 7
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PANTAI LOBBY malam_0
+      name: mouse_Click_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 3840
-        height: 2160
+        width: 53
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 38e3b26a66208f510800000000000000
-      internalID: 1583017908918500995
+      spriteID: 4a58cf5a6b96cd110800000000000000
+      internalID: 1287019826710873508
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PANTAI LOBBY malam_0: 1583017908918500995
+      mouse_Click_0: 1287019826710873508
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

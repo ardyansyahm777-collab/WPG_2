@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 132e79dd939f29341948f00d176f113c
+guid: 29f5079f42036a044873670103cbdfbf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1361202517731583471
-    second: meja_kayu_0
+      213: -6180466521561654754
+    second: 1775697972847_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: meja_kayu_0
+      name: 1775697972847_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 287
-        height: 63
+        width: 749
+        height: 1234
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fe522c85a76f3e210800000000000000
-      internalID: 1361202517731583471
+      spriteID: e1a9f14b1729a3aa0800000000000000
+      internalID: -6180466521561654754
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      meja_kayu_0: 1361202517731583471
+      1775697972847_0: -6180466521561654754
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

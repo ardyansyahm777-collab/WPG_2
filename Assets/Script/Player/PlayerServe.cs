@@ -7,11 +7,10 @@ public class PlayerServe : MonoBehaviour
 
     public NPCQueue queue;
 
-    void Update()
+
+    public void buttonBantuanClick()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            NPC npc = queue.GetForntNPC();
+        NPC npc = queue.GetForntNPC();
 
             if(npc != null && npc.CekTerpenuhi(logistik, firstAid))
             {
@@ -20,6 +19,5 @@ public class PlayerServe : MonoBehaviour
 
                 queue.RemoveForntNPC();
             }
-        }
     }
 }
