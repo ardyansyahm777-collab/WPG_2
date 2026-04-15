@@ -1,50 +1,53 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCQueue : MonoBehaviour
+public class NPCQueue : MonoBehaviour 
 {
-    public Transform[] queuePoints;
+    public RectTransform[] queuePoints;
     public GameObject npcPrefab;
     public KebutuhanGenerator generator;
+    public Transform uiParent;
 
     private List<NPC> npcList = new List<NPC>();
+    private int npcTersisaHariIni;
 
-    public void SpawnNPC()
+    void Start() { MulaiHari(0); }
+
+    public void MulaiHari(int index)
     {
-        GameObject obj = Instantiate(npcPrefab, queuePoints[0].position, Quaternion.identity);
-        NPC npc = obj.GetComponent<NPC>();
-
-        npc.SetKebutuhan(generator.GetRandom());
-
-        npcList.Insert(0, npc);
-        UpdateQueuePosition();
+        if (index >= generator.daftarHari.Count) return;
+        generator.indexHariSekarang = index;
+        npcTersisaHariIni = generator.GetTotalNPC();
+        SpawnNPC(); // Munculkan 1 NPC pertama
     }
 
-    void UpdateQueuePosition()
+    public void SpawnNPC() 
     {
-        for(int i = 0; i < npcList.Count; i++)
+        if (npcList.Count < queuePoints.Length && npcTersisaHariIni > 0) 
         {
-            npcList[i].transform.position = queuePoints[i].position;
+            GameObject obj = Instantiate(npcPrefab, uiParent);
+            NPC npc = obj.GetComponent<NPC>();
+            npc.SetKebutuhan(generator.GetRandomKebutuhan());
+            npc.SetVisual(generator.GetRandomSprite());
+            npcList.Insert(0, npc);
+            npcTersisaHariIni--; 
+            UpdateQueuePosition();
         }
     }
 
-    public NPC GetForntNPC()
-    {
-        if(npcList.Count > 0)
-            return npcList[npcList.Count - 1];
-
-        return null;
-    }
-
-    public void RemoveForntNPC()
+    public void RemoveForntNPC() 
     {
         if (npcList.Count == 0) return;
-
-        NPC fornt = npcList[npcList.Count - 1];
         npcList.RemoveAt(npcList.Count - 1);
-
-        Destroy(fornt.gameObject);
-
         UpdateQueuePosition();
+        Invoke("SpawnNPC", 2f); // NPC selanjutnya muncul setelah jeda
     }
+
+    public void UpdateQueuePosition() 
+    {
+        for(int i = 0; i < npcList.Count; i++)
+            npcList[i].SetTargetPos(queuePoints[i].anchoredPosition);
+    }
+
+    public NPC GetForntNPC() => npcList.Count > 0 ? npcList[npcList.Count - 1] : null;
 }

@@ -15,6 +15,7 @@ public class ShowObject : MonoBehaviour
     {
         if (uiManager != null)
         {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.paper);
             // Mengambil nama GameObject ("calendar") sebagai judul
             uiManager.ShowInfo(title, description, objectSprite);
         }

@@ -1,46 +1,49 @@
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class NPC : MonoBehaviour
 {
     public KebutuhanSet kebutuhan;
+    public Image avatarImage;
+    public TextMeshProUGUI logistikText;
+    public TextMeshProUGUI firstAidText;
+    public float moveSpeed = 8f;
 
-    public SpriteRenderer spriteRenderer;
+    private RectTransform rect;
+    private Vector2 targetPos;
+    private Animator anim;
+    private bool sedangKeluar = false;
 
-    public Sprite spriteLogistik1;
-    public Sprite spriteLogistik2;
-    public Sprite spriteCampur;
-    public Sprite spriteFirstAid;
-
-    public void SetKebutuhan(KebutuhanSet k)
+    void Awake()
     {
-        kebutuhan = k;
-        UpdateSprite();
+        anim = GetComponent<Animator>();
+        rect = GetComponent<RectTransform>();
+        targetPos = rect.anchoredPosition;
     }
 
-    void UpdateSprite()
+    void Update()
     {
-        if(kebutuhan.logistik == 1 && kebutuhan.firstAid == 0)
-        {
-            spriteRenderer.sprite = spriteLogistik1;
-        }
-        else if(kebutuhan.logistik == 2)
-        {
-            spriteRenderer.sprite = spriteLogistik2;
-        }
-        else if(kebutuhan.logistik == 1 && kebutuhan.firstAid == 1)
-        {
-            spriteRenderer.sprite = spriteCampur;
-        }
-        else if(kebutuhan.firstAid == 1)
-        {
-            spriteRenderer.sprite = spriteFirstAid;
-        }
+        if (!sedangKeluar)
+            rect.anchoredPosition = Vector2.Lerp(rect.anchoredPosition, targetPos, Time.deltaTime * moveSpeed);
     }
 
-    public bool CekTerpenuhi(int logistikPlayer, int firstAidPlayer)
+    public void SetKebutuhan(KebutuhanSet data)
     {
-        return logistikPlayer >= kebutuhan.logistik &&
-               firstAidPlayer >= kebutuhan.firstAid;
+        kebutuhan = data;
+        if (logistikText != null) logistikText.text = kebutuhan.logistik.ToString();
+        if (firstAidText != null) firstAidText.text = kebutuhan.firstAid.ToString();
+    }
+
+    public void SetVisual(Sprite img) { if (avatarImage != null) avatarImage.sprite = img; }
+    public void SetTargetPos(Vector2 pos) => targetPos = pos;
+    public bool CekTerpenuhi(int l, int f) => l >= kebutuhan.logistik && f >= kebutuhan.firstAid;
+
+    public void TriggerKeluar()
+    {
+        if (sedangKeluar) return;
+        sedangKeluar = true;
+        if (anim != null) anim.SetTrigger("Exit");
+        Destroy(gameObject, 4f);
     }
 }

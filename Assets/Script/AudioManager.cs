@@ -11,8 +11,8 @@ public class AudioManager : MonoBehaviour
     [Header("---------- Audio Clip ----------")]
     public AudioClip background;
     public AudioClip Click;
-    public AudioClip gameOver;
-    public AudioClip win;
+    public AudioClip pop;
+    public AudioClip paper;
     public static AudioManager Instance { get; private set; }
 
 

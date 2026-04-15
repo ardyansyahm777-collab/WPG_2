@@ -76,6 +76,7 @@ public class UIManager : MonoBehaviour
     public void HideInfo()
     {
         if (panel != null) panel.SetActive(false);
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.paper);
     }
 
     private void HandleExtreme3DFlip()

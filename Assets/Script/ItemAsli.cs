@@ -4,79 +4,60 @@ using UnityEngine.EventSystems;
 
 public class ItemAsli : MonoBehaviour, IPointerDownHandler
 {
-    [Header("Settings")]
-    public GameManager gameManager;
+    [Header("Visual Settings")]
     public Sprite spriteUntukClone;
     public Transform containerShow;
 
-    private void OnMouseDown()
-    {
-        if (!gameObject.name.Contains("(Clone)"))
-        {
-            ExecuteClone();
-        }
-    }
+    [Header("Drop Settings")]
+    // Tarik objek 'area_bantuan' ke slot ini di Inspector
+    public GameObject dropZoneArea; 
+
+    [Header("Item Data")]
+    public KebutuhanType tipeItem;
+    public int jumlahItem = 1;
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!gameObject.name.Contains("(Clone)"))
-        {
-            ExecuteClone();
-        }
+        // Pastikan kita tidak meng-clone objek yang sudah berupa clone
+        if (!gameObject.name.Contains("(Clone)")) ExecuteClone();
     }
 
     private void ExecuteClone()
     {
-        if (containerShow == null) 
-        {
-            Debug.LogError("Container Show belum diisi di Inspector!");
-            return;
-        }
+        // Safety check agar tidak error jika lupa pasang container
+        if (containerShow == null) return;
 
         GameObject clone = Instantiate(gameObject, transform.position, transform.rotation);
-        
-        // Set Parent
         clone.transform.SetParent(containerShow, true);
-        
-        // PAKSA AKTIF: Agar clone muncul meskipun 'object_show' sedang mati
-        clone.SetActive(true); 
-
-        clone.transform.localScale = transform.localScale;
+        clone.SetActive(true);
         clone.name = gameObject.name + "(Clone)";
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.pop);
+        
 
-        ApplySpriteAndSize(clone);
-
-        DragClone drag = clone.AddComponent<DragClone>();
-        drag.gameManager = gameManager;
-        drag.dropZone = GameObject.Find("area_bantuan");
-    }
-
-    private void ApplySpriteAndSize(GameObject clone)
-    {
-        if (spriteUntukClone == null) return;
-
-        Image uiFront = clone.GetComponent<Image>();
-        if (uiFront != null)
-        {
-            uiFront.sprite = spriteUntukClone;
-            uiFront.SetNativeSize();
-            RectTransform backRect = clone.transform.Find("back")?.GetComponent<RectTransform>();
-            if (backRect != null)
-            {
-                backRect.sizeDelta = uiFront.rectTransform.sizeDelta;
-            }
-            return;
+        // Atur visual clone
+        Image img = clone.GetComponent<Image>();
+        if (img != null) 
+        { 
+            img.sprite = spriteUntukClone; 
+            img.SetNativeSize(); 
+            // PENTING: Pastikan Raycast Target aktif agar bisa di-drag
+            img.raycastTarget = true; 
         }
 
-        SpriteRenderer sr = clone.GetComponent<SpriteRenderer>();
-        if (sr != null)
+        // Pasang dan atur script DragClone
+        DragClone drag = clone.AddComponent<DragClone>();
+        
+        // MENGISI DROPZONE: Sekarang mengambil langsung dari variabel dropZoneArea
+        drag.dropZone = this.dropZoneArea; 
+        
+        drag.tipeItem = this.tipeItem;
+        drag.jumlahItem = this.jumlahItem;
+        
+        
+        // Jika masih null, tampilkan peringatan di Console
+        if (drag.dropZone == null) 
         {
-            sr.sprite = spriteUntukClone;
-            Transform backObj = clone.transform.Find("back");
-            if (backObj != null)
-            {
-                backObj.localScale = Vector3.one; 
-            }
+            Debug.LogError("Drop Zone Area belum diisi di Inspector ItemAsli!");
         }
     }
 }

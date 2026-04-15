@@ -6,15 +6,10 @@ using System.Collections;
 public class HoverHighlight : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Shader Property Names")]
-    // Diubah menjadi string agar bisa mereferensi nama variabel di shader
-    [SerializeField] private string mainColorProp = "_                      MainColor"; 
     [SerializeField] private string thicknessProp = "_Thickness";
     [SerializeField] private string outlineColorProp = "_OutlineColor";
 
     [Header("Color Settings")]
-    [Tooltip("Warna saat tidak di-hover (atur agar tidak terlalu putih)")]
-    [SerializeField] private Color idleColor = new Color(0.8f, 0.8f, 0.8f, 1f); 
-    [SerializeField] private Color highlightColor = Color.red;
     [SerializeField] private Color outlineColor = Color.white;
 
     [Header("Hover Settings")]
@@ -22,8 +17,6 @@ public class HoverHighlight : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField] private float fadeDuration = 0.2f;
 
     private float currentThickness = 0f;
-    private Color currentColor;
-    
     private Material targetMaterial;
     private Coroutine fadeCoroutine;
     private bool isUI = false;
@@ -35,6 +28,7 @@ public class HoverHighlight : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if (img != null) 
         { 
+            // Membuat instance material baru agar tidak mengubah semua objek yang pakai material sama
             img.material = new Material(img.material); 
             targetMaterial = img.material; 
             isUI = true; 
@@ -47,51 +41,47 @@ public class HoverHighlight : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if (targetMaterial != null)
         {
-            // Set ke warna idle awal agar tidak langsung putih/merah
-            currentColor = idleColor;
+            // Inisialisasi awal: outline mati
             targetMaterial.SetFloat(thicknessProp, 0f);
-            targetMaterial.SetColor(mainColorProp, idleColor);
             targetMaterial.SetColor(outlineColorProp, outlineColor);
         }
     }
 
-    public void OnPointerEnter(PointerEventData eventData) => StartFade(activeThickness, highlightColor);
-    public void OnPointerExit(PointerEventData eventData) => StartFade(0f, idleColor);
+    // Trigger untuk UI (Canvas)
+    public void OnPointerEnter(PointerEventData eventData) => StartFade(activeThickness);
+    public void OnPointerExit(PointerEventData eventData) => StartFade(0f);
 
-    void OnMouseEnter() { if (!isUI) StartFade(activeThickness, highlightColor); }
-    void OnMouseExit() { if (!isUI) StartFade(0f, idleColor); }
+    // Trigger untuk Sprite (World Space)
+    void OnMouseEnter() { if (!isUI) StartFade(activeThickness); }
+    void OnMouseExit() { if (!isUI) StartFade(0f); }
 
-    private void StartFade(float targetT, Color targetC)
+    private void StartFade(float targetT)
     {
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
-        fadeCoroutine = StartCoroutine(FadeRoutine(targetT, targetC));
+        fadeCoroutine = StartCoroutine(FadeRoutine(targetT));
     }
 
-    private IEnumerator FadeRoutine(float targetT, Color targetC)
+    private IEnumerator FadeRoutine(float targetT)
     {
         float elapsedTime = 0f;
         float startT = currentThickness;
-        Color startC = currentColor;
 
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / fadeDuration;
 
+            // Transisi halus nilai ketebalan outline saja
             currentThickness = Mathf.Lerp(startT, targetT, t);
-            currentColor = Color.Lerp(startC, targetC, t);
 
             if (targetMaterial != null)
             {
                 targetMaterial.SetFloat(thicknessProp, currentThickness);
-                targetMaterial.SetColor(mainColorProp, currentColor);
             }
             yield return null;
         }
 
         currentThickness = targetT;
-        currentColor = targetC;
         targetMaterial.SetFloat(thicknessProp, currentThickness);
-        targetMaterial.SetColor(mainColorProp, currentColor);
     }
 }
