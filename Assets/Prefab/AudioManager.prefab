@@ -52,8 +52,8 @@ MonoBehaviour:
   sfxSource: {fileID: 2641062733358413120}
   background: {fileID: 8300000, guid: 94a00c71bf16f6d4e8c2156922908aa8, type: 3}
   Click: {fileID: 8300000, guid: 42cebff059fa5de438a66c52a52c2393, type: 3}
-  gameOver: {fileID: 0}
-  win: {fileID: 0}
+  pop: {fileID: 0}
+  paper: {fileID: 0}
 --- !u!114 &5482237939015833045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,6 +70,9 @@ MonoBehaviour:
   masterSlider: {fileID: 0}
   musicSlider: {fileID: 0}
   sfxSlider: {fileID: 0}
+  masterText: {fileID: 0}
+  musicText: {fileID: 0}
+  sfxText: {fileID: 0}
 --- !u!1 &5284607781028184429
 GameObject:
   m_ObjectHideFlags: 0

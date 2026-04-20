@@ -14,13 +14,10 @@ public class AudioManager : MonoBehaviour
     public AudioClip pop;
     public AudioClip paper;
     public static AudioManager Instance { get; private set; }
+    
 
 
-    private void Start()
-    {
-        musicSource.clip = background;
-        musicSource.Play();
-    }
+
 
     private void Awake()
     {
