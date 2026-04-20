@@ -8,33 +8,38 @@ public class NPC : MonoBehaviour
     [Header("Data & Dialog")]
     public KebutuhanSet kebutuhan;
     public DialogData daftarDialog;
-    
+
     [Header("UI References")]
     public GameObject bubbleChatObject; 
     public TextMeshProUGUI bubbleChatText;
     public Image avatarImage;
     public TextMeshProUGUI logistikText; 
     public TextMeshProUGUI firstAidText; 
-    
+
     [Header("Settings")]
     public float moveSpeed = 8f;
     [Tooltip("Toleransi jarak untuk memicu dialog. Gunakan 30-50 untuk UI.")]
     public float arrivalThreshold = 40f; 
-    
+
     private RectTransform rect;
     private Vector2 targetPos;
     private Animator anim;
     private bool sedangKeluar = false;
     private bool dialogSudahMuncul = false;
 
+    private GameManager gameManager;
+
     void Awake()
     {
         anim = GetComponent<Animator>();
         rect = GetComponent<RectTransform>();
         targetPos = rect.anchoredPosition;
-        
+
         // Pastikan bubble chat mati saat awal muncul
         if (bubbleChatObject != null) bubbleChatObject.SetActive(false);
+
+        // Cari GameManager di scene (opsional, bisa juga di-assign via Inspector)
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     void Update()
@@ -46,12 +51,11 @@ public class NPC : MonoBehaviour
 
             // Hitung jarak ke target
             float jarak = Vector2.Distance(rect.anchoredPosition, targetPos);
-            
-            // Jika sudah sangat dekat dengan target dan belum pernah ngomong
+
+            // Jika sudah dekat dengan target dan belum pernah ngomong
             if (jarak < arrivalThreshold && !dialogSudahMuncul)
             {
                 dialogSudahMuncul = true;
-                // Paksa posisi ke target agar presisi
                 rect.anchoredPosition = targetPos; 
                 StartCoroutine(MunculkanDialog());
             }
@@ -76,8 +80,6 @@ public class NPC : MonoBehaviour
     public void SetTargetPos(Vector2 pos) 
     { 
         targetPos = pos; 
-        // Jika NPC pindah ke titik antrean baru, kita tidak mereset dialogSudahMuncul 
-        // agar dia tidak ngomong berkali-kali saat bergeser di antrean.
     }
 
     // --- FUNGSI LOGIKA GAME ---
@@ -91,8 +93,6 @@ public class NPC : MonoBehaviour
 
     IEnumerator MunculkanDialog()
     {
-        // Jeda sedikit agar dialog muncul tepat setelah berhenti
-        //Bubble chat program
         yield return new WaitForSeconds(0.25f);
         
         if (bubbleChatObject != null && daftarDialog != null && bubbleChatText != null)
@@ -102,7 +102,6 @@ public class NPC : MonoBehaviour
             string teksHasil = "";
             string[] pilihanDialog = null;
 
-            // Memilih kategori dialog berdasarkan isi kebutuhan
             if (kebutuhan.logistik > 0 && kebutuhan.firstAid > 0)
                 pilihanDialog = daftarDialog.dialogKeduanya;
             else if (kebutuhan.logistik > 0)
@@ -110,7 +109,6 @@ public class NPC : MonoBehaviour
             else if (kebutuhan.firstAid > 0)
                 pilihanDialog = daftarDialog.dialogFirstAid;
 
-            // Ambil teks acak dan masukkan angka kebutuhan {0} atau {1}
             if (pilihanDialog != null && pilihanDialog.Length > 0)
             {
                 string mentah = pilihanDialog[Random.Range(0, pilihanDialog.Length)];
@@ -125,7 +123,6 @@ public class NPC : MonoBehaviour
 
             bubbleChatText.text = teksHasil;
 
-            // Refresh Layout agar background (Image) mengikuti panjang teks (TMP)
             Canvas.ForceUpdateCanvases();
             LayoutRebuilder.ForceRebuildLayoutImmediate(bubbleChatObject.GetComponent<RectTransform>());
             
@@ -143,13 +140,18 @@ public class NPC : MonoBehaviour
     {
         if (sedangKeluar) return;
         sedangKeluar = true;
-        
-        // Sembunyikan bubble saat pergi agar tidak melayang di udara
+
         if (bubbleChatObject != null) bubbleChatObject.SetActive(false); 
-        
         if (anim != null) anim.SetTrigger("Exit");
-        
+
         Debug.Log($"<color=magenta>[NPC]</color> {gameObject.name} sedang keluar.");
+
+        // Bisa panggil GameManager jika perlu notifikasi NPC selesai
+        if (gameManager != null)
+        {
+            gameManager.NPCFinishedTurn();
+        }
+
         Destroy(gameObject, 4f);
     }
 }
