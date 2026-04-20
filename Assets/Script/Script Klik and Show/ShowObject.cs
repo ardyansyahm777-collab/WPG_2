@@ -6,6 +6,7 @@ public class ShowObject : MonoBehaviour
     [TextArea(3, 10)]
     public string description;
     public Sprite objectSprite;
+    public Sprite[] daftarTanggal;
     
     // Referensi ke UIManager
     public UIManager uiManager;
@@ -16,12 +17,22 @@ public class ShowObject : MonoBehaviour
         if (uiManager != null)
         {
             AudioManager.Instance.PlaySFX(AudioManager.Instance.paper);
-            // Mengambil nama GameObject ("calendar") sebagai judul
             uiManager.ShowInfo(title, description, objectSprite);
+
+            // Tambahan: jika objek ini adalah kalender
+            if (gameObject.name == "calendar")
+            {
+                // Kalender sekarang hanya update tampilan hari
+                Object.FindFirstObjectByType<PergantianKalender>()?.UpdateKalender();
+
+                // Jika ingin memicu transisi hari (misalnya setelah cutscene)
+                // panggil TransisiHariBerikutnya() dari GameManager atau PergantianKalender
+                // Object.FindFirstObjectByType<GameManager>()?.NPCFinishedTurn();
+            }
         }
         else
         {
-            Debug.LogError("UIManager belum ditarik ke script ShowObject di " + gameObject.name);
+            Debug.LogError("UIManager belum di-assign di ShowObject pada " + gameObject.name);
         }
     }
 }

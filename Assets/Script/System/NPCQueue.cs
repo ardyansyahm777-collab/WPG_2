@@ -4,12 +4,11 @@ using UnityEngine;
 public class NPCQueue : MonoBehaviour 
 {
     [Header("References")]
-    public RectTransform[] queuePoints; // Point_1 (Masuk), Point_2 (Tengah/Meja)
+    public RectTransform[] queuePoints;
     public GameObject npcPrefab;
     public KebutuhanGenerator generator;
     public Transform uiParent;
 
-    [Header("Debug Info")]
     public int GetTersisaHariIni() => npcTersisaHariIni;
 
     private List<NPC> npcList = new List<NPC>();
@@ -25,7 +24,7 @@ public class NPCQueue : MonoBehaviour
         if (index >= generator.daftarHari.Count) return;
         generator.indexHariSekarang = index;
         npcTersisaHariIni = generator.GetTotalNPC();
-        SpawnNPC(); // Munculkan 1 NPC pertama
+        SpawnNPC();
     }
 
     public void SpawnNPC() 
@@ -38,26 +37,17 @@ public class NPCQueue : MonoBehaviour
             npc.SetKebutuhan(generator.GetRandomKebutuhan());
             npc.SetVisual(generator.GetRandomSprite());
             
-            // Masukkan ke urutan 0 (paling belakang dalam list logic)
             npcList.Insert(0, npc);
-            npcTersisaHariIni--; 
             UpdateQueuePosition();
         }
-
-        // Cek apakah semua NPC hari ini sudah selesai
-        if (npcTersisaHariIni == 0 && npcList.Count == 0)
-        {
-            Object.FindFirstObjectByType<PergantianKalender>().NPCFinishedTurn();
-            Debug.Log("<color=cyan>[NPCQueue]</color> Semua NPC selesai, hari berganti.");
-        }   
     }
 
     public void RemoveForntNPC() 
     {
         if (npcList.Count == 0) return;
-        
-        // NPC yang dihapus adalah yang paling depan (indeks terakhir)
+
         npcList.RemoveAt(npcList.Count - 1);
+        npcTersisaHariIni--; // kurangi di sini, saat NPC benar-benar keluar
         UpdateQueuePosition();
 
         if (npcTersisaHariIni > 0)
@@ -66,17 +56,18 @@ public class NPCQueue : MonoBehaviour
         }
         else if (npcList.Count == 0)
         {
-            // Semua NPC hari ini sudah selesai
-            Object.FindFirstObjectByType<PergantianKalender>().NPCFinishedTurn();
+            Object.FindFirstObjectByType<GameManager>()?.NPCFinishedTurn();
             Debug.Log("<color=cyan>[NPCQueue]</color> Semua NPC selesai, hari berganti ke hari berikutnya.");
         }
     }
+
 
     public void UpdateQueuePosition() 
     {
         for(int i = 0; i < npcList.Count; i++)
         {
-            // Indeks terakhir di npcList = queuePoints terakhir (depan meja)
+            if (npcList[i] == null) continue;
+
             int pointIndex = (queuePoints.Length - 1) - (npcList.Count - 1 - i);
             pointIndex = Mathf.Clamp(pointIndex, 0, queuePoints.Length - 1);
             

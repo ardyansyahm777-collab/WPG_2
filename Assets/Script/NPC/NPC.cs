@@ -147,10 +147,6 @@ public class NPC : MonoBehaviour
         Debug.Log($"<color=magenta>[NPC]</color> {gameObject.name} sedang keluar.");
 
         // Bisa panggil GameManager jika perlu notifikasi NPC selesai
-        if (gameManager != null)
-        {
-            gameManager.NPCFinishedTurn();
-        }
 
         Destroy(gameObject, 4f);
     }
