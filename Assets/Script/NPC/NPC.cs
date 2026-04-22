@@ -19,7 +19,43 @@ public class NPC : MonoBehaviour
     [Header("Settings")]
     public float moveSpeed = 8f;
     [Tooltip("Toleransi jarak untuk memicu dialog. Gunakan 30-50 untuk UI.")]
-    public float arrivalThreshold = 40f; 
+    public float arrivalThreshold = 40f;
+
+    // =========================
+    // TAMBAHAN: EMOSI NPC
+    // =========================
+    [Header("Emosi NPC")]
+    public int maxSalah = 3;
+    private int jumlahSalah = 0;
+    private bool sudahMarah = false;
+
+    // =========================
+    // 🆕 SISTEM NPC MARAH
+    // =========================
+    [Header("Lose Condition")]
+    public int maxNPCMarah = 2;
+    private int jumlahNPCMarah = 0;
+
+    public void NPCMarah()
+    {
+        jumlahNPCMarah++;
+
+        Debug.Log("NPC marah: " + jumlahNPCMarah);
+
+        if (jumlahNPCMarah >= maxNPCMarah)
+        {
+            LoseGame();
+        }
+    }
+
+    void LoseGame()
+    {
+        Debug.Log("GAME OVER!");
+
+        Time.timeScale = 0f;
+
+        // TODO: tampilkan UI kalah
+    }
 
     private RectTransform rect;
     private Vector2 targetPos;
@@ -39,7 +75,7 @@ public class NPC : MonoBehaviour
         if (bubbleChatObject != null) bubbleChatObject.SetActive(false);
 
         // Cari GameManager di scene (opsional, bisa juga di-assign via Inspector)
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindFirstObjectByType<GameManager>();
     }
 
     void Update()
@@ -82,11 +118,77 @@ public class NPC : MonoBehaviour
         targetPos = pos; 
     }
 
+    // =========================
+    // MODIFIKASI: HANDLE ITEM
+    // =========================
+    public void TerimaItem(int l, int f)
+    {
+        if (CekTerpenuhi(l, f))
+        {
+            Debug.Log("<color=green>Benar!</color>");
+            TriggerKeluar();
+        }
+        else
+        {
+            Salah();
+        }
+    }
+
     // --- FUNGSI LOGIKA GAME ---
 
     public bool CekTerpenuhi(int l, int f) 
     { 
         return l >= kebutuhan.logistik && f >= kebutuhan.firstAid; 
+    }
+
+    // =========================
+    // TAMBAHAN: SALAH
+    // =========================
+    void Salah()
+    {
+        jumlahSalah++;
+
+        Debug.Log($"<color=red>Salah! ({jumlahSalah}/{maxSalah})</color>");
+
+        if (bubbleChatText != null)
+            bubbleChatText.text = "Salah!";
+
+        if (jumlahSalah >= maxSalah && !sudahMarah)
+        {
+            Marah();
+        }
+    }
+
+    private int salahCount = 0;
+
+    public void WrongResponse()
+    {
+        salahCount++;
+
+        if (salahCount >= 3)
+        {
+            Marah();
+        }
+    }
+
+    // =========================
+    // TAMBAHAN: MARAH
+    // =========================
+    void Marah()
+    {
+        sudahMarah = true;
+
+        Debug.Log("<color=red>NPC MARAH!</color>");
+
+        if (bubbleChatText != null)
+            bubbleChatText.text = "Kamu bikin saya marah!";
+
+        if (gameManager != null)
+        {
+            gameManager.NPCMarah();
+        }
+
+        TriggerKeluar();
     }
 
     // --- FUNGSI DIALOG ---
@@ -141,7 +243,7 @@ public class NPC : MonoBehaviour
         if (sedangKeluar) return;
         sedangKeluar = true;
 
-        if (bubbleChatObject != null) bubbleChatObject.SetActive(false); 
+        if (bubbleChatObject != null) bubbleChatObject.SetActive(false);
         if (anim != null) anim.SetTrigger("Exit");
 
         Debug.Log($"<color=magenta>[NPC]</color> {gameObject.name} sedang keluar.");

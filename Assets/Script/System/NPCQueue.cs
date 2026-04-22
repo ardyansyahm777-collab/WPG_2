@@ -21,6 +21,7 @@ public class NPCQueue : MonoBehaviour
 
     public void MulaiHari(int index)
     {
+        Object.FindFirstObjectByType<GameManager>()?.ResetMarah();
         if (index >= generator.daftarHari.Count) return;
         generator.indexHariSekarang = index;
         npcTersisaHariIni = generator.GetTotalNPC();

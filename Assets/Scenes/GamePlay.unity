@@ -3096,6 +3096,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f32a2cc279ad0479c6847a398df6ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  currentDay: 1
+  maxDay: 3
+  winPanel: {fileID: 0}
+  maxNPCMarah: 2
 --- !u!4 &1967045665
 Transform:
   m_ObjectHideFlags: 0
