@@ -3147,10 +3147,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KebutuhanGenerator
   kumpulanGambarNPC:
-  - {fileID: 21300000, guid: 29f5079f42036a044873670103cbdfbf, type: 3}
-  - {fileID: 21300000, guid: 5e9c0b1bce3af3d4ebb10a4bef413995, type: 3}
-  - {fileID: 21300000, guid: 0f3db53ad8bba734185c4b0ebc64f959, type: 3}
-  - {fileID: 21300000, guid: 58bc3727e5685994299eb5056c748359, type: 3}
+  - {fileID: -7069838767583448294, guid: 7033b056ba68d684896a02a0b201aeb3, type: 3}
+  - {fileID: 4705546087526965687, guid: 480d0aa09a8c2204583a522b52888fa0, type: 3}
+  - {fileID: -3706235905752516810, guid: eeadb4f539c82c84ea6acdc95fb88bbd, type: 3}
+  - {fileID: -4595444745495371565, guid: 097b575e90aab1645ab372c01faa7391, type: 3}
   kemungkinanKebutuhan: []
   daftarHari:
   - namaHari: Day1

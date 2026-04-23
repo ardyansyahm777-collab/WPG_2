@@ -617,7 +617,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 29f5079f42036a044873670103cbdfbf, type: 3}
+  m_Sprite: {fileID: -7069838767583448294, guid: 7033b056ba68d684896a02a0b201aeb3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -672,3 +672,5 @@ MonoBehaviour:
   firstAidText: {fileID: 5771985875631602750}
   moveSpeed: 8
   arrivalThreshold: 40
+  maxSalah: 3
+  maxNPCMarah: 2
