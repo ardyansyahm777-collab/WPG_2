@@ -92,6 +92,8 @@ public class NPC : MonoBehaviour
             if (jarak < arrivalThreshold && !dialogSudahMuncul)
             {
                 dialogSudahMuncul = true;
+                if (bubbleChatObject != null)
+                    bubbleChatObject.SetActive(true);
                 rect.anchoredPosition = targetPos; 
                 StartCoroutine(MunculkanDialog());
             }
@@ -195,7 +197,7 @@ public class NPC : MonoBehaviour
 
     IEnumerator MunculkanDialog()
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.05f);
         
         if (bubbleChatObject != null && daftarDialog != null && bubbleChatText != null)
         {
