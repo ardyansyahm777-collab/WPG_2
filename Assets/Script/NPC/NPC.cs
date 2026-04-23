@@ -65,6 +65,8 @@ public class NPC : MonoBehaviour
 
     private GameManager gameManager;
 
+    private BubbleChatForcer bubbleForcer;
+
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -72,7 +74,12 @@ public class NPC : MonoBehaviour
         targetPos = rect.anchoredPosition;
 
         // Pastikan bubble chat mati saat awal muncul
-        if (bubbleChatObject != null) bubbleChatObject.SetActive(false);
+        if (bubbleChatObject != null)
+        {
+            bubbleForcer = bubbleChatObject.GetComponent<BubbleChatForcer>();
+            if (bubbleForcer == null)
+                bubbleForcer = bubbleChatObject.AddComponent<BubbleChatForcer>();
+        }
 
         // Cari GameManager di scene (opsional, bisa juga di-assign via Inspector)
         gameManager = FindFirstObjectByType<GameManager>();
@@ -92,8 +99,6 @@ public class NPC : MonoBehaviour
             if (jarak < arrivalThreshold && !dialogSudahMuncul)
             {
                 dialogSudahMuncul = true;
-                if (bubbleChatObject != null)
-                    bubbleChatObject.SetActive(true);
                 rect.anchoredPosition = targetPos; 
                 StartCoroutine(MunculkanDialog());
             }
@@ -197,12 +202,11 @@ public class NPC : MonoBehaviour
 
     IEnumerator MunculkanDialog()
     {
-        yield return new WaitForSeconds(0.05f);
-        
-        if (bubbleChatObject != null && daftarDialog != null && bubbleChatText != null)
+        yield return null;
+        yield return null;
+
+        if (daftarDialog != null && bubbleChatText != null)
         {
-            bubbleChatObject.SetActive(true);
-            
             string teksHasil = "";
             string[] pilihanDialog = null;
 
@@ -227,9 +231,9 @@ public class NPC : MonoBehaviour
 
             bubbleChatText.text = teksHasil;
 
-            Canvas.ForceUpdateCanvases();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(bubbleChatObject.GetComponent<RectTransform>());
-            
+            if (bubbleForcer != null)
+                bubbleForcer.Tampilkan();
+
             Debug.Log($"<color=green>[NPC Success]</color> Dialog muncul di {gameObject.name}: {teksHasil}");
         }
         else
@@ -245,13 +249,12 @@ public class NPC : MonoBehaviour
         if (sedangKeluar) return;
         sedangKeluar = true;
 
-        if (bubbleChatObject != null) bubbleChatObject.SetActive(false);
+        if (bubbleForcer != null)
+            bubbleForcer.Sembunyikan();
+        else if (bubbleChatObject != null)
+            bubbleChatObject.SetActive(false);
+
         if (anim != null) anim.SetTrigger("Exit");
-
-        Debug.Log($"<color=magenta>[NPC]</color> {gameObject.name} sedang keluar.");
-
-        // Bisa panggil GameManager jika perlu notifikasi NPC selesai
-
         Destroy(gameObject, 4f);
     }
 }
