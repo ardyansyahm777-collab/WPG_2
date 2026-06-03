@@ -19,7 +19,10 @@ public class ClickReleaseScript : MonoBehaviour
 
             if (ClickedObject)
             {
-                ClickedObject.GetComponent<SpriteRenderer>().color = Color.red;
+                if (ClickedObject.GetComponent<SpriteRenderer>() != null)
+                {
+                    ClickedObject.GetComponent<SpriteRenderer>().color = Color.red;
+                }
             }
         }
 
@@ -28,7 +31,10 @@ public class ClickReleaseScript : MonoBehaviour
         {
             if (ClickedObject)
             {
-                ClickedObject.GetComponent<SpriteRenderer>().color = Color.white;
+                if (ClickedObject.GetComponent<SpriteRenderer>() != null)
+                {
+                    ClickedObject.GetComponent<SpriteRenderer>().color = Color.white;
+                }
                 ClickedObject = null; // reset supaya tidak nyangkut
             }
         }

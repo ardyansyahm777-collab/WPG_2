@@ -1,97 +1,144 @@
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     [Header("Game Loop")]
     public int currentDay = 1;
-    public int maxDay = 3;
+    public int maxDay     = 3;
 
-    [Header("UI")]
-    public GameObject winPanel; // drag UI menang ke sini
-    public void NPCFinishedTurn()
-    {
-        Debug.Log("<color=orange>[GameManager]</color> NPC selesai, giliran berikutnya diproses.");
+    [Header("UI Panels")]
+    public GameObject winPanel;
+    public GameObject losePanel;
 
-        // Panggil transisi hari di PergantianKalender
-        Object.FindFirstObjectByType<PergantianKalender>()?.TransisiHariBerikutnya();
-    }
+    [Header("UI Teks")]
+    public TextMeshProUGUI txtAlasanKalah;
+    public TextMeshProUGUI txtHariSekarang;
+
+    [Header("Lose Condition")]
+    public int maxNPCMarah = 2;
+    private int jumlahNPCMarah = 0;
+
+    [Header("Referensi Script UI Laporan")]
+    public LaporanHarianUI laporanHarianScript; 
 
     void Start()
     {
-        StartCoroutine(DelayedMusic());
-    }
-    
-    IEnumerator DelayedMusic()
-    {
-        yield return new WaitForSeconds(3f);
-
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.musicSource.clip = AudioManager.Instance.background;
-            AudioManager.Instance.musicSource.Play();
-        }
+        if (winPanel  != null) winPanel.SetActive(false);
+        if (losePanel != null) losePanel.SetActive(false);
     }
 
-
-
-    // =========================
-    // 🎮 GAME LOOP SYSTEM
-    // =========================
-    public void NextDay()
+    public void NextDay(int targetHari)
     {
-        currentDay++;
+        currentDay = targetHari;
+        Debug.Log($"<color=cyan>[GameManager]</color> Mulai Hari {currentDay}");
 
-        Debug.Log("Hari sekarang: " + currentDay);
+        UpdateHariUI();
+        ResetMarah();
+        PutarMusikGameplay();
 
         if (currentDay > maxDay)
         {
             WinGame();
+            return;
+        }
+
+        // --- SISTEM ADD PASOKAN BANTUAN PER HARI ---
+        KebutuhanGenerator generator = Object.FindFirstObjectByType<KebutuhanGenerator>();
+        if (generator != null && GameDataManager.Instance != null)
+        {
+            // Reset statistik laporan harian dari nol di setiap awal hari baru
+            GameDataManager.Instance.ResetStatistikHarian();
+
+            int indexHari = currentDay - 1;
+            if (indexHari < generator.daftarHari.Count)
+            {
+                // Ambil nilai dari konfigurasi KebutuhanGenerator
+                int pasokanLogistik = generator.daftarHari[indexHari].pasokanLogistikHariIni;
+                int pasokanMedic = generator.daftarHari[indexHari].pasokanMedicHariIni;
+
+                // Masukkan data bantuan ke dalam penyimpanan pusat data
+                GameDataManager.Instance.logistik = pasokanLogistik;
+                GameDataManager.Instance.firstAid = pasokanMedic;
+                GameDataManager.Instance.totalLogistikMasuk = pasokanLogistik;
+                GameDataManager.Instance.totalMedicMasuk = pasokanMedic;
+            }
+        }
+
+        // Sinkronisasi data ke UI utama gameplay setelah mendapatkan bantuan harian
+        Object.FindFirstObjectByType<PlayerServe>()?.SinkronisasiDataPusatKeUI();
+
+        // Spawn NPC hari ini
+        Object.FindFirstObjectByType<NPCQueue>()?.MulaiHari(currentDay - 1);
+    }
+
+    /// <summary>Dipanggil NPCQueue saat shift selesai.</summary>
+    public void NPCFinishedTurn()
+    {
+        Debug.Log("<color=orange>[GameManager]</color> Shift selesai. Membuka laporan harian.");
+        
+        // Membuka UI laporan harian terlebih dahulu sebelum memicu transisi
+        if (laporanHarianScript != null)
+        {
+            laporanHarianScript.TampilkanLaporan();
+        }
+        else
+        {
+            SelesaiTampilkanLaporan(); // Fallback langsung jalan jika lupa memasang referensi UI
+        }
+    }
+
+    /// <summary>Dipanggil oleh LaporanHarianUI setelah tombol lanjut ditekan.</summary>
+    public void SelesaiTampilkanLaporan()
+    {
+        int hariBerikutnya = currentDay + 1;
+
+        if (DayTransitionManager.Instance != null)
+            DayTransitionManager.Instance.MulaiTransisi(hariBerikutnya);
+        else
+            NextDay(hariBerikutnya);
+    }
+
+    void PutarMusikGameplay()
+    {
+        if (AudioManager.Instance != null && AudioManager.Instance.background != null)
+        {
+            AudioManager.Instance.musicSource.Stop();
+            AudioManager.Instance.musicSource.clip = AudioManager.Instance.background;
+            AudioManager.Instance.musicSource.loop = true;
+            AudioManager.Instance.musicSource.Play();
         }
     }
 
     void WinGame()
     {
-        Debug.Log("MENANG!");
-
-        if (winPanel != null)
-            winPanel.SetActive(true);
-
-        Time.timeScale = 0f; // pause game
+        if (winPanel != null) winPanel.SetActive(true);
+        Time.timeScale = 0f;
     }
-
-    // =========================
-    // 😡 SISTEM NPC MARAH
-    // =========================
-    [Header("Lose Condition")]
-    public int maxNPCMarah = 2;
-    private int jumlahNPCMarah = 0;
 
     public void NPCMarah()
     {
         jumlahNPCMarah++;
-
-        Debug.Log("NPC marah: " + jumlahNPCMarah);
-
-        if (jumlahNPCMarah >= maxNPCMarah)
-        {
-            LoseGame();
-        }
+        if (jumlahNPCMarah >= maxNPCMarah) LoseGame();
     }
 
-    public void ResetMarah()
-    {
-        jumlahNPCMarah = 0;
-        Debug.Log("Reset NPC marah di hari baru");
-    }
+    public void ResetMarah() => jumlahNPCMarah = 0;
 
     void LoseGame()
     {
-        Debug.Log("GAME OVER!");
-
+        if (txtAlasanKalah != null)
+            txtAlasanKalah.text = "Kamu dipecat!\nBanyak warga yang marah karena kesalahan layananmu.";
+        if (losePanel != null) losePanel.SetActive(true);
         Time.timeScale = 0f;
-
-        // (opsional) tampilkan UI kalah nanti di sini
     }
+
+    void UpdateHariUI()
+    {
+        if (txtHariSekarang != null)
+            txtHariSekarang.text = $"Hari {currentDay}";
+    }
+
+    public void OnWinContinue()  { Time.timeScale = 1f; UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu"); }
+    public void OnLoseRetry()    { Time.timeScale = 1f; UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); }
+    public void OnLoseMainMenu() { Time.timeScale = 1f; UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu"); }
 }

@@ -16,50 +16,37 @@ public class DragClone : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (canvasGroup == null) canvasGroup = gameObject.AddComponent<CanvasGroup>();
     }
 
-    public void OnBeginDrag(PointerEventData eventData) { canvasGroup.blocksRaycasts = false; canvasGroup.alpha = 0.6f; }
-    public void OnDrag(PointerEventData eventData) { rectTransform.anchoredPosition += eventData.delta; }
+    public void OnBeginDrag(PointerEventData eventData) 
+    { 
+        canvasGroup.blocksRaycasts = false; 
+        canvasGroup.alpha = 0.6f; 
+    }
+
+    public void OnDrag(PointerEventData eventData) 
+    { 
+        rectTransform.anchoredPosition += eventData.delta; 
+    }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
+        // Cek apakah item dilepas di dalam area Meja (Drop Zone)
         if (dropZone != null && RectTransformUtility.RectangleContainsScreenPoint(
             dropZone.GetComponent<RectTransform>(), Input.mousePosition, eventData.pressEventCamera))
         {
-            // --- CEK APAKAH INI BARU PERTAMA KALI DITARUH? ---
+            // --- HANYA BERI TAG TANPA MENAMBAH STOK DI PLAYER SERVE ---
             if (gameObject.tag != "ItemDimeja") 
             {
-                PlayerServe player = Object.FindFirstObjectByType<PlayerServe>();
-                if (player != null)
-                {
-                    if (tipeItem == KebutuhanType.Logistik) player.logistik += jumlahItem;
-                    else if (tipeItem == KebutuhanType.FirstAid) player.firstAid += jumlahItem;
-                    
-                    // Beri tag SETELAH stok ditambah
-                    gameObject.tag = "ItemDimeja"; 
-                    Debug.Log("Item baru ditaruh. Stok bertambah.");
-                }
-            }
-            else 
-            {
-                Debug.Log("Item sudah ada di meja, tidak menambah stok lagi.");
+                gameObject.tag = "ItemDimeja"; 
+                Debug.Log($"Item {tipeItem} ditaruh di meja. (Stok harian tidak bertambah karena sudah diberikan di awal hari)");
             }
         }
         else 
         { 
-            // Jika ditarik keluar dari meja (mungkin pemain berubah pikiran)
-            // Kita harus kurangi stoknya kembali jika ia sudah pernah terhitung
-            if (gameObject.tag == "ItemDimeja")
-            {
-                PlayerServe player = Object.FindFirstObjectByType<PlayerServe>();
-                if (player != null)
-                {
-                    if (tipeItem == KebutuhanType.Logistik) player.logistik -= jumlahItem;
-                    else if (tipeItem == KebutuhanType.FirstAid) player.firstAid -= jumlahItem;
-                }
-            }
-            
+            // Jika ditarik keluar dari meja atau dilepas di luar drop zone, item dihancurkan
+            // Tidak perlu mengurangi stok GameDataManager karena saat ditaruh pun tidak menambah stok
             Destroy(gameObject); 
         }
     }

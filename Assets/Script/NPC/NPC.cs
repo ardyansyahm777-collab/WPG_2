@@ -5,256 +5,210 @@ using System.Collections;
 
 public class NPC : MonoBehaviour
 {
+    // =============================================
+    // DATA & DIALOG
+    // =============================================
     [Header("Data & Dialog")]
     public KebutuhanSet kebutuhan;
     public DialogData daftarDialog;
 
+    // =============================================
+    // UI REFERENCES
+    // =============================================
     [Header("UI References")]
-    public GameObject bubbleChatObject; 
+    public GameObject bubbleChatObject;
     public TextMeshProUGUI bubbleChatText;
     public Image avatarImage;
-    public TextMeshProUGUI logistikText; 
-    public TextMeshProUGUI firstAidText; 
+    public TextMeshProUGUI logistikText;
+    public TextMeshProUGUI firstAidText;
 
+    // =============================================
+    // SETTINGS
+    // =============================================
     [Header("Settings")]
-    public float moveSpeed = 8f;
-    [Tooltip("Toleransi jarak untuk memicu dialog. Gunakan 30-50 untuk UI.")]
-    public float arrivalThreshold = 40f;
+    public float moveSpeed = 8f; // tidak dipakai jika pakai Animator, tapi dibiarkan agar tidak error
 
-    // =========================
-    // TAMBAHAN: EMOSI NPC
-    // =========================
+    // =============================================
+    // EMOSI NPC
+    // =============================================
     [Header("Emosi NPC")]
     public int maxSalah = 3;
-    private int jumlahSalah = 0;
-    private bool sudahMarah = false;
+    private int jumlahSalah  = 0;
+    private bool sudahMarah  = false;
 
-    // =========================
-    // 🆕 SISTEM NPC MARAH
-    // =========================
-    [Header("Lose Condition")]
-    public int maxNPCMarah = 2;
-    private int jumlahNPCMarah = 0;
-
-    public void NPCMarah()
-    {
-        jumlahNPCMarah++;
-
-        Debug.Log("NPC marah: " + jumlahNPCMarah);
-
-        if (jumlahNPCMarah >= maxNPCMarah)
-        {
-            LoseGame();
-        }
-    }
-
-    void LoseGame()
-    {
-        Debug.Log("GAME OVER!");
-
-        Time.timeScale = 0f;
-
-        // TODO: tampilkan UI kalah
-    }
-
-    private RectTransform rect;
-    private Vector2 targetPos;
-    private Animator anim;
-    private bool sedangKeluar = false;
+    // =============================================
+    // PRIVATE STATE
+    // =============================================
+    private bool sedangKeluar     = false;
     private bool dialogSudahMuncul = false;
 
     private GameManager gameManager;
-
     private BubbleChatForcer bubbleForcer;
+    private Animator anim;
 
+    // =============================================
+    // UNITY LIFECYCLE
+    // =============================================
     void Awake()
     {
-        anim = GetComponent<Animator>();
-        rect = GetComponent<RectTransform>();
-        targetPos = rect.anchoredPosition;
+        anim        = GetComponent<Animator>();
+        gameManager = Object.FindFirstObjectByType<GameManager>();
 
-        // Pastikan bubble chat mati saat awal muncul
         if (bubbleChatObject != null)
         {
             bubbleForcer = bubbleChatObject.GetComponent<BubbleChatForcer>();
             if (bubbleForcer == null)
                 bubbleForcer = bubbleChatObject.AddComponent<BubbleChatForcer>();
         }
-
-        // Cari GameManager di scene (opsional, bisa juga di-assign via Inspector)
-        gameManager = FindFirstObjectByType<GameManager>();
     }
 
-    void Update()
-    {
-        if (!sedangKeluar)
-        {
-            // Pergerakan halus ke posisi target (antrean)
-            rect.anchoredPosition = Vector2.Lerp(rect.anchoredPosition, targetPos, Time.deltaTime * moveSpeed);
-
-            // Hitung jarak ke target
-            float jarak = Vector2.Distance(rect.anchoredPosition, targetPos);
-
-            // Jika sudah dekat dengan target dan belum pernah ngomong
-            if (jarak < arrivalThreshold && !dialogSudahMuncul)
-            {
-                dialogSudahMuncul = true;
-                rect.anchoredPosition = targetPos; 
-                StartCoroutine(MunculkanDialog());
-            }
-        }
-    }
-
-    // --- FUNGSI PENGATURAN DATA ---
-
+    // =============================================
+    // SETUP (Dipanggil NPCQueue)
+    // =============================================
     public void SetKebutuhan(KebutuhanSet data)
     {
         kebutuhan = data;
         if (logistikText != null) logistikText.text = kebutuhan.logistik.ToString();
-        if (firstAidText != null) firstAidText.text = kebutuhan.firstAid.ToString();
-        Debug.Log($"<color=yellow>[NPC]</color> Kebutuhan diatur: L={kebutuhan.logistik}, F={kebutuhan.firstAid}");
+        if (firstAidText  != null) firstAidText.text  = kebutuhan.firstAid.ToString();
     }
 
-    public void SetVisual(Sprite img) 
-    { 
-        if (avatarImage != null) avatarImage.sprite = img; 
+    public void SetVisual(Sprite img)
+    {
+        if (avatarImage != null) avatarImage.sprite = img;
     }
 
-    public void SetTargetPos(Vector2 pos) 
-    { 
-        targetPos = pos; 
+    // Dibiarkan agar tidak ada error compile di script lain yang memanggil ini
+    public void SetTargetPos(Vector2 pos) { }
+    public Vector2 GetTargetPos() => Vector2.zero;
+    public bool SudahTriggerDialog() => dialogSudahMuncul;
+
+    // =============================================
+    // ANIMATION EVENT — pasang di akhir clip NPC_IN
+    // =============================================
+
+    /// <summary>
+    /// Dipanggil oleh Animation Event di akhir clip NPC_IN,
+    /// tepat saat NPC sudah berhenti di tengah layar.
+    /// Cara pasang: Animation window → clip NPC_IN → frame terakhir → Add Event → OnArrivedAtService
+    /// </summary>
+    public void OnArrivedAtService()
+    {
+        if (dialogSudahMuncul || sedangKeluar) return;
+        dialogSudahMuncul = true;
+
+        Debug.Log("<color=lime>[NPC]</color> Animation Event: NPC tiba di titik layanan, memicu dialog.");
+        StartCoroutine(MunculkanDialog());
     }
 
-    // =========================
-    // MODIFIKASI: HANDLE ITEM
-    // =========================
+    // Method ini tetap ada untuk kompatibilitas dengan NPCQueue lama
+    public void TriggerDialogFromQueue() => OnArrivedAtService();
+
+    // =============================================
+    // LOGIKA INTERAKSI
+    // =============================================
     public void TerimaItem(int l, int f)
     {
-        if (CekTerpenuhi(l, f))
-        {
-            Debug.Log("<color=green>Benar!</color>");
-            TriggerKeluar();
-        }
-        else
-        {
-            Salah();
-        }
+        if (sedangKeluar) return;
+        if (CekTerpenuhi(l, f)) TriggerKeluar();
+        else Salah();
     }
 
-    // --- FUNGSI LOGIKA GAME ---
+    public bool CekTerpenuhi(int l, int f)
+        => l == kebutuhan.logistik && f == kebutuhan.firstAid;
 
-    public bool CekTerpenuhi(int l, int f) 
-    { 
-        return l >= kebutuhan.logistik && f >= kebutuhan.firstAid; 
-    }
-
-    // =========================
-    // TAMBAHAN: SALAH
-    // =========================
     void Salah()
     {
         jumlahSalah++;
+        Debug.Log($"<color=red>[NPC]</color> Salah! ({jumlahSalah}/{maxSalah})");
 
-        Debug.Log($"<color=red>Salah! ({jumlahSalah}/{maxSalah})</color>");
+        if (jumlahSalah >= maxSalah && !sudahMarah) { Marah(); return; }
 
-        if (bubbleChatText != null)
-            bubbleChatText.text = "Salah!";
-
-        if (jumlahSalah >= maxSalah && !sudahMarah)
-        {
-            Marah();
-        }
+        TampilkanBubble($"Itu bukan yang saya butuhkan!\n(Peringatan {jumlahSalah}/{maxSalah})");
     }
 
-    private int salahCount = 0;
+    public void WrongResponse() => Salah();
 
-    public void WrongResponse()
-    {
-        salahCount++;
-
-        if (salahCount >= 3)
-        {
-            Marah();
-        }
-    }
-
-    // =========================
-    // TAMBAHAN: MARAH
-    // =========================
     void Marah()
     {
         sudahMarah = true;
+        TampilkanBubble("Saya tidak mau dilayani lagi!");
+        if (gameManager != null) gameManager.NPCMarah();
+        StartCoroutine(TriggerKeluarSetelahDelay(1.5f));
+    }
 
-        Debug.Log("<color=red>NPC MARAH!</color>");
-
-        if (bubbleChatText != null)
-            bubbleChatText.text = "Kamu bikin saya marah!";
-
-        if (gameManager != null)
-        {
-            gameManager.NPCMarah();
-        }
-
+    IEnumerator TriggerKeluarSetelahDelay(float detik)
+    {
+        yield return new WaitForSeconds(detik);
         TriggerKeluar();
     }
 
-    // --- FUNGSI DIALOG ---
+    // =============================================
+    // BUBBLE CHAT
+    // =============================================
+    void TampilkanBubble(string teks)
+    {
+        if (bubbleChatText != null) bubbleChatText.text = teks;
+        if (bubbleForcer   != null) bubbleForcer.Tampilkan();
+        else if (bubbleChatObject != null) bubbleChatObject.SetActive(true);
+    }
 
     IEnumerator MunculkanDialog()
     {
-        yield return null;
-        yield return null;
+        yield return new WaitForSeconds(3f); // Tunggu 1 detik setelah animasi selesai
 
-        if (daftarDialog != null && bubbleChatText != null)
+        if (daftarDialog == null || bubbleChatText == null)
         {
-            string teksHasil = "";
-            string[] pilihanDialog = null;
-
-            if (kebutuhan.logistik > 0 && kebutuhan.firstAid > 0)
-                pilihanDialog = daftarDialog.dialogKeduanya;
-            else if (kebutuhan.logistik > 0)
-                pilihanDialog = daftarDialog.dialogLogistik;
-            else if (kebutuhan.firstAid > 0)
-                pilihanDialog = daftarDialog.dialogFirstAid;
-
-            if (pilihanDialog != null && pilihanDialog.Length > 0)
-            {
-                string mentah = pilihanDialog[Random.Range(0, pilihanDialog.Length)];
-                
-                if (kebutuhan.logistik > 0 && kebutuhan.firstAid > 0)
-                    teksHasil = string.Format(mentah, kebutuhan.logistik, kebutuhan.firstAid);
-                else if (kebutuhan.logistik > 0)
-                    teksHasil = string.Format(mentah, kebutuhan.logistik);
-                else
-                    teksHasil = string.Format(mentah, kebutuhan.firstAid);
-            }
-
-            bubbleChatText.text = teksHasil;
-
-            if (bubbleForcer != null)
-                bubbleForcer.Tampilkan();
-
-            Debug.Log($"<color=green>[NPC Success]</color> Dialog muncul di {gameObject.name}: {teksHasil}");
+            Debug.LogWarning("[NPC] daftarDialog atau bubbleChatText belum di-assign di prefab!");
+            yield break;
         }
+
+        string[] pilihanDialog = null;
+
+        if (kebutuhan.logistik > 0 && kebutuhan.firstAid > 0)
+            pilihanDialog = daftarDialog.dialogKeduanya;
+        else if (kebutuhan.logistik > 0)
+            pilihanDialog = daftarDialog.dialogLogistik;
+        else if (kebutuhan.firstAid > 0)
+            pilihanDialog = daftarDialog.dialogFirstAid;
+
+        if (pilihanDialog == null || pilihanDialog.Length == 0)
+        {
+            Debug.LogWarning("[NPC] Array dialog kosong untuk kebutuhan ini.");
+            yield break;
+        }
+
+        string mentah = pilihanDialog[Random.Range(0, pilihanDialog.Length)];
+        string dialogFinal;
+
+        if (kebutuhan.logistik > 0 && kebutuhan.firstAid > 0)
+            dialogFinal = string.Format(mentah, kebutuhan.logistik, kebutuhan.firstAid);
+        else if (kebutuhan.logistik > 0)
+            dialogFinal = string.Format(mentah, kebutuhan.logistik);
         else
-        {
-            Debug.LogWarning($"<color=red>[NPC Error]</color> Komponen UI atau DialogData pada {gameObject.name} belum lengkap!");
-        }
+            dialogFinal = string.Format(mentah, kebutuhan.firstAid);
+
+        TampilkanBubble(dialogFinal);
     }
 
-    // --- FUNGSI KELUAR ---
-
+    // =============================================
+    // EXIT
+    // =============================================
     public void TriggerKeluar()
     {
         if (sedangKeluar) return;
         sedangKeluar = true;
 
-        if (bubbleForcer != null)
-            bubbleForcer.Sembunyikan();
-        else if (bubbleChatObject != null)
-            bubbleChatObject.SetActive(false);
+        if (bubbleForcer != null) bubbleForcer.Sembunyikan();
 
         if (anim != null) anim.SetTrigger("Exit");
-        Destroy(gameObject, 4f);
+        Destroy(gameObject, 2f);
+
+        StartCoroutine(NotifikasiKeluar());
+    }
+
+    IEnumerator NotifikasiKeluar()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Object.FindFirstObjectByType<NPCQueue>()?.RemoveForntNPC();
     }
 }

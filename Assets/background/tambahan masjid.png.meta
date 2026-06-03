@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7033b056ba68d684896a02a0b201aeb3
+guid: 67d69ae0866a96940b6b19b65349c37e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7069838767583448294
-    second: 1776329774410_0
+      213: -3680230480837746516
+    second: tambahan masjid_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 1776329774410_0
+      name: tambahan masjid_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 735
-        height: 1152
+        width: 1365
+        height: 768
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a1337e63913e2ed90800000000000000
-      internalID: -7069838767583448294
+      spriteID: ca0e91a50e13decc0800000000000000
+      internalID: -3680230480837746516
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      1776329774410_0: -7069838767583448294
+      tambahan masjid_0: -3680230480837746516
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

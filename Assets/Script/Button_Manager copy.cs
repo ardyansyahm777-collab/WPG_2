@@ -1,17 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement; // Diperlukan untuk mendeteksi nama scene
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Audio; // TAMBAHKAN INI UNTUK MEMPERBAIKI EROR SNAPSHOT
+using UnityEngine.Audio;
 
 public class Button_Manager : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private GameObject setting;
     public TMP_Dropdown resolutionDropdown;
-    
 
     [Header("Audio Settings")]
     public AudioMixerSnapshot normalSnapshot;
@@ -24,13 +23,31 @@ public class Button_Manager : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton pattern agar mudah diakses
         if (Instance == null) Instance = this;
     }
 
     private void Start()
     {
         SetupResolutionDropdown();
+    }
+
+    // =============================================
+    // FITUR TOMBOL ESC (KHUSUS GAMEPLAY)
+    // =============================================
+    private void Update()
+    {
+        // Mendeteksi apakah pemain menekan tombol Escape (ESC)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // Ambil nama scene yang sedang aktif saat ini
+            string sceneAktif = SceneManager.GetActiveScene().name;
+
+            // PENTING: Ganti "GamePlay" sesuai dengan nama scene gameplay kamu persis (case-sensitive)
+            if (sceneAktif == "GamePlay")
+            {
+                PauseButton(); // Jalankan fungsi Pause/Resume otomatis
+            }
+        }
     }
 
     // --- LOGIKA DROPDOWN RESOLUSI ---
@@ -71,17 +88,19 @@ public class Button_Manager : MonoBehaviour
 
     public void playButton()
     {
-        // Kita panggil Coroutine di sini
-        ButtonClick(); // Suara klik
-    
+        ButtonClick();
+
         if (AudioManager.Instance != null)
+            AudioManager.Instance.musicSource.Stop();
+
+        if (DayTransitionManager.Instance != null)
+            DayTransitionManager.Instance.MulaiDariMainMenu();
+        else
         {
-            AudioManager.Instance.musicSource.Stop(); // Matikan musik segera
+            Debug.LogWarning("[Button_Manager] DayTransitionManager tidak ditemukan, load scene langsung.");
+            SceneManager.LoadScene("CutScene");
         }
-
-        SceneManager.LoadScene("GamePlay"); // Langsung
     }
-
 
     public void settingButton()
     {
@@ -94,8 +113,10 @@ public class Button_Manager : MonoBehaviour
     {
         if (GameIsPaused) Resume();
         else Pause();
-        
-        settingButton(); // Membuka/menutup menu setting saat pause
+
+        // Membuka atau menutup panel setting secara otomatis
+        if (setting != null)
+            setting.SetActive(!setting.activeSelf);
     }
 
     public void Resume()
@@ -120,13 +141,16 @@ public class Button_Manager : MonoBehaviour
 
     public void ButtonClick()
     {
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.Click);
+        if (AudioManager.Instance != null && AudioManager.Instance.Click != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.Click);
+        }
     }
 
     public void QuitButton()
     {
         ButtonClick();
-        Debug.Log("Game is exiting"); 
+        Debug.Log("Game is exiting");
         Application.Quit();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;

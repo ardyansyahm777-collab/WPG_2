@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7443756053782179069, guid: 4f91d1c5630ccd0409c1bbc10f4bee1b, type: 3}
+  m_Sprite: {fileID: -3680230480837746516, guid: 67d69ae0866a96940b6b19b65349c37e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -300,17 +300,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 857882433}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &98578369 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5482237939015833045, guid: fa438330675f1bf4c80d134e868539dc, type: 3}
-  m_PrefabInstance: {fileID: 661971286}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 185618ba93fd7064cbf1e2dd3e20f7de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &177238177 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4116396989152499189, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
@@ -476,13 +465,14 @@ GameObject:
   - component: {fileID: 340033343}
   - component: {fileID: 340033345}
   - component: {fileID: 340033344}
+  - component: {fileID: 340033346}
   m_Layer: 5
   m_Name: object_show
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &340033343
 RectTransform:
   m_ObjectHideFlags: 0
@@ -543,6 +533,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 340033342}
   m_CullTransparentMesh: 1
+--- !u!114 &340033346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340033342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4970020500755214da7b04561ff1339c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameDataManager
+  logistik: 0
+  firstAid: 0
+  totalLogistikMasuk: 0
+  totalMedicMasuk: 0
+  totalLogistikKeluar: 0
+  totalMedicKeluar: 0
+  wargaBerhasilDibantu: 0
 --- !u!1 &354758877
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,7 +834,7 @@ PrefabInstance:
     - target: {fileID: 2612002869498646838, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 98578369}
+      objectReference: {fileID: 0}
     - target: {fileID: 2612002869498646838, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetSfxVolume
@@ -849,7 +858,7 @@ PrefabInstance:
     - target: {fileID: 3957451924640440985, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 98578369}
+      objectReference: {fileID: 0}
     - target: {fileID: 3957451924640440985, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetMusicVolume
@@ -857,7 +866,7 @@ PrefabInstance:
     - target: {fileID: 4116396989152499189, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 98578369}
+      objectReference: {fileID: 0}
     - target: {fileID: 4116396989152499189, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetMasterVolume
@@ -1469,13 +1478,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ff51dad3ea2c64ab27138c3fce75da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerServe
-  logistik: 0
-  firstAid: 0
-  totalLogistikMasuk: 0
-  totalMedicMasuk: 0
-  totalLogistikKeluar: 0
-  totalMedicKeluar: 0
-  queue: {fileID: 1967045666}
+  txtMasuk: {fileID: 0}
+  txtKeluar: {fileID: 0}
+  txtSisa: {fileID: 0}
+  queue: {fileID: 1967045669}
 --- !u!1 &930890796
 GameObject:
   m_ObjectHideFlags: 0
@@ -1899,6 +1905,55 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 543.1846, y: 555.371}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1162096535
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1162096537}
+  - component: {fileID: 1162096536}
+  m_Layer: 0
+  m_Name: CutsceneController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1162096536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162096535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ccbaf388bfd29045add0022819a8dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneController
+  txtHari: {fileID: 0}
+  jarakAnterHuruf: 0.12
+  pitchMinimal: 0.9
+  pitchMaksimal: 1.2
+  jedaSetelahSelesai: 1.5
+--- !u!4 &1162096537
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162096535}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 446.89975, y: 373.05444, z: -9.987402}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1169558147
 GameObject:
   m_ObjectHideFlags: 0
@@ -2277,6 +2332,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1269201984}
   m_CullTransparentMesh: 1
+--- !u!1 &1338276996
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1338276998}
+  - component: {fileID: 1338276997}
+  m_Layer: 0
+  m_Name: GameDataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1338276997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338276996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4970020500755214da7b04561ff1339c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameDataManager
+  logistik: 0
+  firstAid: 0
+  totalLogistikMasuk: 0
+  totalMedicMasuk: 0
+  totalLogistikKeluar: 0
+  totalMedicKeluar: 0
+  wargaBerhasilDibantu: 0
+--- !u!4 &1338276998
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338276996}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 938.69507, y: 467.4256, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1368594984 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4759181181382014829, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
@@ -2674,7 +2780,7 @@ GameObject:
   - component: {fileID: 1506852739}
   - component: {fileID: 1506852740}
   m_Layer: 5
-  m_Name: DialyReport
+  m_Name: DailyReport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2749,7 +2855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab8867941a4ba54ab44abdb5495f8d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowObject
-  title: Dialy Report
+  title: Daily Report
   description: 
   objectSprite: {fileID: 7995725746436835114, guid: 83faed49fa760d9489397af6b50b4698, type: 3}
   daftarTanggal: []
@@ -3075,8 +3181,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1967045665}
   - component: {fileID: 1967045664}
-  - component: {fileID: 1967045666}
   - component: {fileID: 1967045667}
+  - component: {fileID: 1967045669}
   m_Layer: 0
   m_Name: 'GameManager '
   m_TagString: Untagged
@@ -3099,7 +3205,11 @@ MonoBehaviour:
   currentDay: 1
   maxDay: 3
   winPanel: {fileID: 0}
+  losePanel: {fileID: 0}
+  txtAlasanKalah: {fileID: 0}
+  txtHariSekarang: {fileID: 0}
   maxNPCMarah: 2
+  laporanHarianScript: {fileID: 0}
 --- !u!4 &1967045665
 Transform:
   m_ObjectHideFlags: 0
@@ -3115,25 +3225,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1967045666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1967045663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69080875715beb4488092d4893ed6123, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NPCQueue
-  queuePoints:
-  - {fileID: 1733235508}
-  - {fileID: 1551246028}
-  - {fileID: 1504713311}
-  npcPrefab: {fileID: 9125556035957272849, guid: 785e8efe3231f9c43b68e6d47f4b3935, type: 3}
-  generator: {fileID: 1967045667}
-  uiParent: {fileID: 2103405195}
 --- !u!114 &1967045667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3147,19 +3238,58 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KebutuhanGenerator
   kumpulanGambarNPC:
-  - {fileID: -7069838767583448294, guid: 7033b056ba68d684896a02a0b201aeb3, type: 3}
-  - {fileID: 4705546087526965687, guid: 480d0aa09a8c2204583a522b52888fa0, type: 3}
-  - {fileID: -3706235905752516810, guid: eeadb4f539c82c84ea6acdc95fb88bbd, type: 3}
-  - {fileID: -4595444745495371565, guid: 097b575e90aab1645ab372c01faa7391, type: 3}
+  - {fileID: 21300000, guid: 7033b056ba68d684896a02a0b201aeb3, type: 3}
+  - {fileID: 21300000, guid: 480d0aa09a8c2204583a522b52888fa0, type: 3}
+  - {fileID: 21300000, guid: eeadb4f539c82c84ea6acdc95fb88bbd, type: 3}
+  - {fileID: 21300000, guid: 097b575e90aab1645ab372c01faa7391, type: 3}
   kemungkinanKebutuhan: []
   daftarHari:
   - namaHari: Day1
     jumlahTotalNPC: 5
+    pasokanLogistikHariIni: 0
+    pasokanMedicHariIni: 0
   - namaHari: Day2
     jumlahTotalNPC: 7
+    pasokanLogistikHariIni: 0
+    pasokanMedicHariIni: 0
   - namaHari: Day3
     jumlahTotalNPC: 8
+    pasokanLogistikHariIni: 0
+    pasokanMedicHariIni: 0
+  - namaHari: Day4
+    jumlahTotalNPC: 8
+    pasokanLogistikHariIni: 0
+    pasokanMedicHariIni: 0
+  - namaHari: Day5
+    jumlahTotalNPC: 8
+    pasokanLogistikHariIni: 0
+    pasokanMedicHariIni: 0
+  - namaHari: Day6
+    jumlahTotalNPC: 8
+    pasokanLogistikHariIni: 0
+    pasokanMedicHariIni: 0
+  - namaHari: Day7
+    jumlahTotalNPC: 8
+    pasokanLogistikHariIni: 0
+    pasokanMedicHariIni: 0
   indexHariSekarang: 0
+--- !u!114 &1967045669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967045663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c22186284db3f9e4ea9c4591ed45687b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCQueue
+  npcPrefab: {fileID: 5229715561666197015, guid: afc55ce930f9a424ba53ac33127b4a0b, type: 3}
+  npcContainer: {fileID: 2103405195}
+  spawnPoint: {fileID: 1733235508}
+  generator: {fileID: 1967045667}
+  spawnInterval: 1.5
 --- !u!1 &1972852890
 GameObject:
   m_ObjectHideFlags: 0
@@ -3297,6 +3427,55 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &1977742811
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1977742813}
+  - component: {fileID: 1977742812}
+  m_Layer: 0
+  m_Name: DayTransition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1977742812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977742811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b636d6205ddccbc4db5bdad94bfc8aef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DayTransitionManager
+  tutorialSceneName: Tutorial
+  cutsceneSceneName: CutScene
+  gameplaySceneName: GamePlay
+  fadeImage: {fileID: 0}
+  fadeDuration: 0.8
+--- !u!4 &1977742813
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977742811}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 714.7022, y: 689.7027, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2021150129 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3957451924640440985, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
@@ -3598,3 +3777,6 @@ SceneRoots:
   - {fileID: 1967045665}
   - {fileID: 1016238013}
   - {fileID: 6617945240340831954}
+  - {fileID: 1162096537}
+  - {fileID: 1977742813}
+  - {fileID: 1338276998}

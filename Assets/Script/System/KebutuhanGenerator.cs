@@ -6,6 +6,10 @@ public class DayConfig
 {
     public string namaHari;
     public int jumlahTotalNPC; 
+
+    [Header("Bantuan Masuk Otomatis Per Hari")]
+    public int pasokanLogistikHariIni;
+    public int pasokanMedicHariIni;
 }
 
 public class KebutuhanGenerator : MonoBehaviour
@@ -17,7 +21,7 @@ public class KebutuhanGenerator : MonoBehaviour
 
     void Awake()
     {
-        // Daftar kebutuhan random
+        // Pengisian daftar kebutuhan acak default bawaan
         kemungkinanKebutuhan = new List<KebutuhanSet>()
         {
             new KebutuhanSet { logistik = 1, firstAid = 0 },

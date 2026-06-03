@@ -38,6 +38,8 @@ public class CursorManager : MonoBehaviour
         }
     }
 
+    
+
     // Fungsi internal untuk mengganti status hover dari skrip lain
     public void SetHoverState(bool hovering)
     {
