@@ -9,9 +9,6 @@ public class PergantianKalender : MonoBehaviour
     public Sprite[] daftarTanggal;
     public TextMeshProUGUI tanggalText;
     public GameObject laporanUI;
-    public int HariSekarang => hariSekarang;
-
-
 
     private int hariSekarang = 0;
 
