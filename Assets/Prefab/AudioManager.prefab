@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8551471489931524729}
   - component: {fileID: 5419080942551163666}
+  - component: {fileID: 8103877316172596423}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -56,6 +57,25 @@ MonoBehaviour:
   paper: {fileID: 0}
   suaraKetik: {fileID: 8300000, guid: 8c76c6cfe8c4e3842af128bb5cfcdc49, type: 3}
   audioMixer: {fileID: 24100000, guid: adaec1586cdd883499ff0ebdf1dd8656, type: 2}
+--- !u!114 &8103877316172596423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3682006214393751651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 185618ba93fd7064cbf1e2dd3e20f7de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioControl
+  audioMixer: {fileID: 24100000, guid: adaec1586cdd883499ff0ebdf1dd8656, type: 2}
+  masterSlider: {fileID: 0}
+  musicSlider: {fileID: 0}
+  sfxSlider: {fileID: 0}
+  masterText: {fileID: 0}
+  musicText: {fileID: 0}
+  sfxText: {fileID: 0}
 --- !u!1 &5284607781028184429
 GameObject:
   m_ObjectHideFlags: 0

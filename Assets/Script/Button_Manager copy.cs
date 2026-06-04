@@ -98,7 +98,7 @@ public class Button_Manager : MonoBehaviour
         else
         {
             Debug.LogWarning("[Button_Manager] DayTransitionManager tidak ditemukan, load scene langsung.");
-            SceneManager.LoadScene("CutScene");
+            SceneManager.LoadScene("Tutorial");
         }
     }
 

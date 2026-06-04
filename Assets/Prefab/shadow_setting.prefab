@@ -1534,7 +1534,7 @@ GameObject:
   - component: {fileID: 2612002869498646838}
   - component: {fileID: 7547283973061325688}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: SfxSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1729,6 +1729,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1945163328813047632}
   - component: {fileID: 3527680170541844387}
+  - component: {fileID: 381012476059265158}
   m_Layer: 5
   m_Name: volume_container
   m_TagString: Untagged
@@ -1777,6 +1778,25 @@ MonoBehaviour:
   masterText: {fileID: 4759181181382014829}
   musicText: {fileID: 1876581762277706827}
   sfxText: {fileID: 7656336797454048206}
+--- !u!114 &381012476059265158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2854528644663068868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 185618ba93fd7064cbf1e2dd3e20f7de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioControl
+  audioMixer: {fileID: 0}
+  masterSlider: {fileID: 0}
+  musicSlider: {fileID: 0}
+  sfxSlider: {fileID: 0}
+  masterText: {fileID: 0}
+  musicText: {fileID: 0}
+  sfxText: {fileID: 0}
 --- !u!1 &2947345296992344723
 GameObject:
   m_ObjectHideFlags: 0
@@ -1789,7 +1809,7 @@ GameObject:
   - component: {fileID: 4116396989152499189}
   - component: {fileID: 175668827414150531}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: MasterSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3876,7 +3896,7 @@ GameObject:
   - component: {fileID: 3957451924640440985}
   - component: {fileID: 1870975321709284542}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: MusicSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

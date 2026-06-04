@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b636d6205ddccbc4db5bdad94bfc8aef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DayTransitionManager
+  tutorialSceneName: Tutorial
   cutsceneSceneName: CutScene
   gameplaySceneName: GamePlay
   fadeImage: {fileID: 1249556380}
@@ -834,30 +835,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366933196}
   m_CullTransparentMesh: 1
---- !u!1 &524768881 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2854528644663068868, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
-  m_PrefabInstance: {fileID: 6921716960888742545}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &524768883
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 524768881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 185618ba93fd7064cbf1e2dd3e20f7de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AudioControl
-  audioMixer: {fileID: 0}
-  masterSlider: {fileID: 0}
-  musicSlider: {fileID: 0}
-  sfxSlider: {fileID: 0}
-  masterText: {fileID: 0}
-  musicText: {fileID: 0}
-  sfxText: {fileID: 0}
 --- !u!114 &646364672 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4116396989152499189, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
@@ -2438,17 +2415,9 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1605874027}
-    - target: {fileID: 2612002869498646838, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 2764809642971769997, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
       propertyPath: m_Name
       value: shadow_setting
-      objectReference: {fileID: 0}
-    - target: {fileID: 2764809642971769997, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3017013788426630611, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2457,14 +2426,6 @@ PrefabInstance:
     - target: {fileID: 3017013788426630611, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3957451924640440985, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4116396989152499189, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5168410363367137886, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -2605,10 +2566,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2854528644663068868, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 524768883}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55c7091ff28e96c40a80a7f4778fd23c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
