@@ -87,20 +87,46 @@ public class Button_Manager : MonoBehaviour
     // --- LOGIKA TOMBOL ---
 
     public void playButton()
+{
+    ButtonClick();
+
+    // Hentikan musik menu
+    if (AudioManager.Instance != null)
+        AudioManager.Instance.musicSource.Stop();
+
+    // MainMenu → Tutorial
+    if (DayTransitionManager.Instance != null)
     {
-        ButtonClick();
-
-        if (AudioManager.Instance != null)
-            AudioManager.Instance.musicSource.Stop();
-
-        if (DayTransitionManager.Instance != null)
-            DayTransitionManager.Instance.MulaiDariMainMenu();
-        else
-        {
-            Debug.LogWarning("[Button_Manager] DayTransitionManager tidak ditemukan, load scene langsung.");
-            SceneManager.LoadScene("Tutorial");
-        }
+        DayTransitionManager.Instance.MulaiDariMainMenu();
     }
+    else
+    {
+        Debug.LogWarning("[Button_Manager] DayTransitionManager tidak ditemukan, load scene langsung.");
+        SceneManager.LoadScene("Tutorial");
+    }
+}
+
+public void goToGameplay()
+{
+    ButtonClick();
+
+    // Hentikan musik menu
+    if (AudioManager.Instance != null)
+        AudioManager.Instance.musicSource.Stop();
+
+    // Tutorial → CutScene → Gameplay
+    if (DayTransitionManager.Instance != null)
+    {
+        DayTransitionManager.Instance.MulaiDariTutorial();
+    }
+    else
+    {
+        Debug.LogWarning("[Button_Manager] DayTransitionManager tidak ditemukan, load scene langsung.");
+        // fallback langsung ke Gameplay
+        SceneManager.LoadScene("GamePlay");
+    }
+}
+
 
     public void settingButton()
     {

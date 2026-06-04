@@ -44,10 +44,25 @@ public class DayTransitionManager : MonoBehaviour
         StartCoroutine(RoutineKeTutorial());
     }
 
+    public void MulaiDariTutorial()
+    {
+        HariSekarangTransisi = 1;
+        // Mengubah alur permainan agar masuk ke tutorial terlebih dahulu
+        StartCoroutine(RoutineKeGameplay());
+    }
+
     IEnumerator RoutineKeTutorial()
     {
         yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
-        AsyncOperation load = SceneManager.LoadSceneAsync(tutorialSceneName);
+        AsyncOperation load = SceneManager.LoadSceneAsync(gameplaySceneName);
+        while (!load.isDone) yield return null;
+        yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
+    }
+
+    IEnumerator RoutineKeGameplay()
+    {
+        yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
+        AsyncOperation load = SceneManager.LoadSceneAsync(gameplaySceneName);
         while (!load.isDone) yield return null;
         yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
     }

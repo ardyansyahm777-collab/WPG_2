@@ -3256,17 +3256,17 @@ MonoBehaviour:
   kemungkinanKebutuhan: []
   daftarHari:
   - namaHari: Day1
-    jumlahTotalNPC: 5
-    pasokanLogistikHariIni: 0
-    pasokanMedicHariIni: 0
+    jumlahTotalNPC: 3
+    pasokanLogistikHariIni: 5
+    pasokanMedicHariIni: 2
   - namaHari: Day2
-    jumlahTotalNPC: 7
-    pasokanLogistikHariIni: 0
-    pasokanMedicHariIni: 0
+    jumlahTotalNPC: 4
+    pasokanLogistikHariIni: 6
+    pasokanMedicHariIni: 4
   - namaHari: Day3
-    jumlahTotalNPC: 8
-    pasokanLogistikHariIni: 0
-    pasokanMedicHariIni: 0
+    jumlahTotalNPC: 5
+    pasokanLogistikHariIni: 8
+    pasokanMedicHariIni: 5
   - namaHari: Day4
     jumlahTotalNPC: 8
     pasokanLogistikHariIni: 0
