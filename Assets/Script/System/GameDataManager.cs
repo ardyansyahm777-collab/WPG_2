@@ -4,7 +4,7 @@ public class GameDataManager : MonoBehaviour
 {
     public static GameDataManager Instance { get; private set; }
 
-    [Header("Stok Bantuan Saat Ini (Di Meja)")]
+    [Header("Stok Bantuan Saat Ini (Sisa Gudang)")]
     public int logistik;
     public int firstAid;
 
@@ -13,7 +13,7 @@ public class GameDataManager : MonoBehaviour
     public int totalMedicMasuk;
     public int totalLogistikKeluar;
     public int totalMedicKeluar;
-    public int wargaBerhasilDibantu; // Tambahan data warga yang sudah dibantu
+    public int wargaBerhasilDibantu;
 
     void Awake()
     {
@@ -23,19 +23,18 @@ public class GameDataManager : MonoBehaviour
             return;
         }
         Instance = this;
-        // Opsional: Hilangkan tanda komentar jika data ingin persisten antar scene
-        // DontDestroyOnLoad(gameObject);
     }
 
     /// <summary>
     /// Membersihkan data statistik harian setiap kali hari baru dimulai.
+    /// Stok (logistik & firstAid) diisi ulang oleh GameManager setelah fungsi ini.
     /// </summary>
     public void ResetStatistikHarian()
     {
         totalLogistikMasuk = 0;
-        totalMedicMasuk = 0;
+        totalMedicMasuk    = 0;
         totalLogistikKeluar = 0;
-        totalMedicKeluar = 0;
+        totalMedicKeluar   = 0;
         wargaBerhasilDibantu = 0;
     }
 }

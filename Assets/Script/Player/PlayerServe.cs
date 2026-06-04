@@ -14,14 +14,13 @@ public class PlayerServe : MonoBehaviour
     void Start()
     {
         if (queue == null)
-        {
             queue = Object.FindFirstObjectByType<NPCQueue>();
-        }
+
         SinkronisasiDataPusatKeUI();
     }
 
     /// <summary>
-    /// Sinkronisasi visual text UI dengan data yang ada di GameDataManager pusat.
+    /// Sinkronisasi visual text UI dengan data di GameDataManager.
     /// </summary>
     public void SinkronisasiDataPusatKeUI()
     {
@@ -41,28 +40,41 @@ public class PlayerServe : MonoBehaviour
         if (queue == null) queue = Object.FindFirstObjectByType<NPCQueue>();
 
         NPC npc = queue != null ? queue.GetForntNPC() : null;
-
         if (npc == null) return;
-
         if (!npc.SudahTriggerDialog()) return;
 
         GameDataManager data = GameDataManager.Instance;
         if (data == null) return;
 
-        // Pengecekan kecocokan stok menggunakan data terpusat dari GameDataManager
-        bool tepat = (data.logistik == npc.kebutuhan.logistik && data.firstAid == npc.kebutuhan.firstAid);
+        // Hitung berapa item yang saat ini ada di meja berdasarkan tag
+        int logistikDiMeja = 0;
+        int firstAidDiMeja = 0;
+
+        GameObject[] itemsDiMeja = GameObject.FindGameObjectsWithTag("ItemDimeja");
+        foreach (GameObject item in itemsDiMeja)
+        {
+            DragClone drag = item.GetComponent<DragClone>();
+            if (drag == null) continue;
+
+            if (drag.tipeItem == KebutuhanType.Logistik)
+                logistikDiMeja += drag.jumlahItem;
+            else
+                firstAidDiMeja += drag.jumlahItem;
+        }
+
+        // Bandingkan item di meja dengan kebutuhan NPC
+        bool tepat = (logistikDiMeja == npc.kebutuhan.logistik &&
+                      firstAidDiMeja  == npc.kebutuhan.firstAid);
 
         if (tepat)
         {
-            // Tambahkan catatan keluar ke data pusat
-            data.totalLogistikKeluar += npc.kebutuhan.logistik;
-            data.totalMedicKeluar    += npc.kebutuhan.firstAid;
-
-            // Kurangi sisa stok barang bantuan di data pusat
+            // Kurangi stok gudang sesuai yang diberikan
             data.logistik -= npc.kebutuhan.logistik;
             data.firstAid -= npc.kebutuhan.firstAid;
 
-            // Tambahkan statistik warga yang berhasil dibantu
+            // Catat ke statistik laporan
+            data.totalLogistikKeluar += npc.kebutuhan.logistik;
+            data.totalMedicKeluar    += npc.kebutuhan.firstAid;
             data.wargaBerhasilDibantu++;
 
             npc.TriggerKeluar();
@@ -71,35 +83,11 @@ public class PlayerServe : MonoBehaviour
         }
         else
         {
+            // Salah: stok TIDAK berkurang, item meja hanya dihapus
             npc.WrongResponse();
             HapusItemDiMeja();
-            
-            // Konsekuensi salah penanganan bantuan: mengosongkan meja kembali
-            data.logistik = 0;
-            data.firstAid = 0;
         }
 
-        SinkronisasiDataPusatKeUI();
-    }
-
-    // =============================================
-    // ITEM MASUK KE MEJA (dipanggil DragClone)
-    // =============================================
-    public void CatatMasuk(KebutuhanType tipe, int jumlah)
-    {
-        GameDataManager data = GameDataManager.Instance;
-        if (data == null) return;
-
-        if (tipe == KebutuhanType.Logistik)
-        {
-            data.logistik           += jumlah;
-            data.totalLogistikMasuk += jumlah;
-        }
-        else
-        {
-            data.firstAid        += jumlah;
-            data.totalMedicMasuk += jumlah;
-        }
         SinkronisasiDataPusatKeUI();
     }
 

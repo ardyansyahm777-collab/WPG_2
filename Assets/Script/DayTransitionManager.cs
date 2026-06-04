@@ -54,16 +54,43 @@ public class DayTransitionManager : MonoBehaviour
     IEnumerator RoutineKeTutorial()
     {
         yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
-        AsyncOperation load = SceneManager.LoadSceneAsync(gameplaySceneName);
+        // FIX: Load tutorialSceneName, bukan gameplaySceneName
+        AsyncOperation load = SceneManager.LoadSceneAsync(tutorialSceneName);
         while (!load.isDone) yield return null;
         yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
     }
 
     IEnumerator RoutineKeGameplay()
     {
+        // Tutorial → CutScene → Gameplay
         yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
-        AsyncOperation load = SceneManager.LoadSceneAsync(gameplaySceneName);
-        while (!load.isDone) yield return null;
+        AsyncOperation loadCut = SceneManager.LoadSceneAsync(cutsceneSceneName);
+        while (!loadCut.isDone) yield return null;
+
+        yield return null;
+        yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
+
+        // Tunggu cutscene selesai (tombol / auto timer)
+        cutsceneSelesai = false;
+        float elapsed = 0f;
+        while (!cutsceneSelesai && elapsed < 15f)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
+        AsyncOperation loadGame = SceneManager.LoadSceneAsync(gameplaySceneName);
+        while (!loadGame.isDone) yield return null;
+
+        yield return null;
+        yield return null;
+
+        // Mulai hari pertama setelah masuk Gameplay
+        GameManager gm = Object.FindFirstObjectByType<GameManager>();
+        if (gm != null)
+            gm.NextDay(HariSekarangTransisi);
+
         yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
     }
 

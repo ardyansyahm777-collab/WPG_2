@@ -44,66 +44,129 @@ public class AudioControl : MonoBehaviour
 
     // ====================================================================
     // LOGIKA OTOMATIS MENEMUKAN SLIDER & TEKS BERDASARKAN GAMBAR HIERARCHY
+    // Struktur yang diharapkan (sesuai gambar Hierarchy):
+    //   volume_container
+    //     ├── Master_slider_container
+    //     │     ├── outline
+    //     │     ├── Volume        ← TextMeshProUGUI penampil angka
+    //     │     ├── Text          ← label "Master" (tidak dipakai)
+    //     │     └── MasterSlider  ← Slider komponen
+    //     ├── Music_slider_container
+    //     │     ├── outline
+    //     │     ├── Volume
+    //     │     ├── Text
+    //     │     └── MusicSlider
+    //     └── SFX_slider_container
+    //           ├── outline
+    //           ├── Volume
+    //           ├── Text
+    //           └── SfxSlider
     // ====================================================================
     private void FindAudioComponentsAutomatically()
     {
-        // Cari "volume_container" di objek ini atau di parent/anak manapun (Pencarian Global di objek aktif)
+        // Cari "volume_container" secara rekursif dari root script ini
         Transform volumeContainer = FindTransformInHierarchy(transform, "volume_container");
 
+        // Fallback: cari secara global di seluruh scene
         if (volumeContainer == null)
         {
-            // Jika tidak ketemu di sekitar script, coba cari di seluruh Scene sebagai opsi terakhir
             GameObject globalContainer = GameObject.Find("volume_container");
             if (globalContainer != null) volumeContainer = globalContainer.transform;
         }
 
         if (volumeContainer != null)
         {
-            // --- DETEKSI MASTER SLIDER ---
-            // Sesuai gambar: volume_container -> Master_slider_conta -> MasterSlider
+            // --- DETEKSI MASTER ---
             Transform masterRoot = volumeContainer.Find("Master_slider_container");
             if (masterRoot != null)
             {
-                Transform tSlider = masterRoot.Find("MasterSlider");
-                if (tSlider != null) masterSlider = tSlider.GetComponent<Slider>();
-                
-                Transform tText = masterRoot.Find("Volume");
-                if (tText != null) masterText = tText.GetComponent<TextMeshProUGUI>();
+                // Slider — cari langsung by name, lalu fallback GetComponentInChildren
+                masterSlider = FindSliderInContainer(masterRoot, "MasterSlider");
+                // Text Volume — cari "Volume" child langsung
+                masterText   = FindTextInContainer(masterRoot, "Volume");
             }
 
-            // --- DETEKSI MUSIC SLIDER ---
-            // Sesuai gambar: volume_container -> Music_slider_conta -> MusicSlider
+            // --- DETEKSI MUSIC ---
             Transform musicRoot = volumeContainer.Find("Music_slider_container");
             if (musicRoot != null)
             {
-                Transform tSlider = musicRoot.Find("MusicSlider");
-                if (tSlider != null) musicSlider = tSlider.GetComponent<Slider>();
-                
-                Transform tText = musicRoot.Find("Volume");
-                if (tText != null) musicText = tText.GetComponent<TextMeshProUGUI>();
+                musicSlider = FindSliderInContainer(musicRoot, "MusicSlider");
+                musicText   = FindTextInContainer(musicRoot, "Volume");
             }
 
-            // --- DETEKSI SFX SLIDER ---
-            // Sesuai gambar: volume_container -> SFX_slider_conta -> SfxSlider
+            // --- DETEKSI SFX ---
             Transform sfxRoot = volumeContainer.Find("SFX_slider_container");
             if (sfxRoot != null)
             {
-                Transform tSlider = sfxRoot.Find("SfxSlider");
-                if (tSlider != null) sfxSlider = tSlider.GetComponent<Slider>();
-                
-                Transform tText = sfxRoot.Find("Volume");
-                if (tText != null) sfxText = tText.GetComponent<TextMeshProUGUI>();
+                sfxSlider = FindSliderInContainer(sfxRoot, "SfxSlider");
+                sfxText   = FindTextInContainer(sfxRoot, "Volume");
             }
         }
-
-        // Debug log untuk membantu troubleshooting jika ada penamaan yang typo
-        if (masterSlider == null || musicSlider == null || sfxSlider == null)
+        else
         {
-            Debug.LogWarning("[AudioControl] Deteksi otomatis gagal/sebagian tidak ketemu. Pastikan nama GameObject sama persis dengan Hierarchy!");
+            Debug.LogWarning("[AudioControl] 'volume_container' tidak ditemukan di Hierarchy!");
         }
+
+        // Laporan debug per-komponen agar mudah dicek
+        if (masterSlider == null) Debug.LogWarning("[AudioControl] MasterSlider tidak ditemukan. Cek nama GameObject di Inspector.");
+        if (musicSlider  == null) Debug.LogWarning("[AudioControl] MusicSlider tidak ditemukan. Cek nama GameObject di Inspector.");
+        if (sfxSlider    == null) Debug.LogWarning("[AudioControl] SfxSlider tidak ditemukan. Cek nama GameObject di Inspector.");
+        if (masterText   == null) Debug.LogWarning("[AudioControl] Master Volume text tidak ditemukan.");
+        if (musicText    == null) Debug.LogWarning("[AudioControl] Music Volume text tidak ditemukan.");
+        if (sfxText      == null) Debug.LogWarning("[AudioControl] SFX Volume text tidak ditemukan.");
     }
 
-    // Fungsi rekursif untuk mencari nama objek secara fleksibel meskipun posisinya berada di dalam objek lain
+    /// <summary>
+    /// Cari Slider di dalam container: pertama by exact name,
+    /// lalu rekursif, lalu GetComponentInChildren sebagai fallback terakhir.
+    /// </summary>
+    private Slider FindSliderInContainer(Transform container, string sliderName)
+    {
+        // 1. Cari langsung by name (child pertama yang cocok)
+        Transform t = FindTransformInHierarchy(container, sliderName);
+        if (t != null)
+        {
+            Slider s = t.GetComponent<Slider>();
+            if (s != null) return s;
+        }
+
+        // 2. Fallback: ambil Slider pertama yang ditemukan dalam container
+        return container.GetComponentInChildren<Slider>();
+    }
+
+    /// <summary>
+    /// Cari TextMeshProUGUI di dalam container by exact name,
+    /// fallback ke child pertama yang punya komponen TMP.
+    /// Khusus "Volume" karena ada juga "Text" (label) di container yang sama.
+    /// </summary>
+    private TextMeshProUGUI FindTextInContainer(Transform container, string textName)
+    {
+        // 1. Cari langsung child dengan nama tepat
+        Transform t = container.Find(textName);
+        if (t != null)
+        {
+            TextMeshProUGUI tmp = t.GetComponent<TextMeshProUGUI>();
+            if (tmp != null) return tmp;
+        }
+
+        // 2. Rekursif di seluruh hierarki container
+        t = FindTransformInHierarchy(container, textName);
+        if (t != null)
+        {
+            TextMeshProUGUI tmp = t.GetComponent<TextMeshProUGUI>();
+            if (tmp != null) return tmp;
+        }
+
+        // 3. Fallback: ambil TMP pertama (hindari mengambil "Text" label)
+        foreach (TextMeshProUGUI tmp in container.GetComponentsInChildren<TextMeshProUGUI>())
+        {
+            // Prioritaskan objek bernama "Volume" agar tidak salah ambil "Text"
+            if (tmp.gameObject.name.ToLower().Contains("volume")) return tmp;
+        }
+        return null;
+    }
+
+    // Fungsi rekursif mencari objek by name di seluruh cabang hierarchy
     private Transform FindTransformInHierarchy(Transform root, string targetName)
     {
         if (root.name == targetName) return root;

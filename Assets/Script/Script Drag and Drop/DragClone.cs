@@ -6,6 +6,7 @@ public class DragClone : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public GameObject dropZone;
     public KebutuhanType tipeItem;
     public int jumlahItem;
+
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
 
@@ -16,15 +17,15 @@ public class DragClone : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (canvasGroup == null) canvasGroup = gameObject.AddComponent<CanvasGroup>();
     }
 
-    public void OnBeginDrag(PointerEventData eventData) 
-    { 
-        canvasGroup.blocksRaycasts = false; 
-        canvasGroup.alpha = 0.6f; 
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        canvasGroup.blocksRaycasts = false;
+        canvasGroup.alpha = 0.6f;
     }
 
-    public void OnDrag(PointerEventData eventData) 
-    { 
-        rectTransform.anchoredPosition += eventData.delta; 
+    public void OnDrag(PointerEventData eventData)
+    {
+        rectTransform.anchoredPosition += eventData.delta;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -32,22 +33,18 @@ public class DragClone : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
-        // Cek apakah item dilepas di dalam area Meja (Drop Zone)
-        if (dropZone != null && RectTransformUtility.RectangleContainsScreenPoint(
-            dropZone.GetComponent<RectTransform>(), Input.mousePosition, eventData.pressEventCamera))
+        bool diDalamMeja = dropZone != null && RectTransformUtility.RectangleContainsScreenPoint(
+            dropZone.GetComponent<RectTransform>(), Input.mousePosition, eventData.pressEventCamera);
+
+        if (diDalamMeja)
         {
-            // --- HANYA BERI TAG TANPA MENAMBAH STOK DI PLAYER SERVE ---
-            if (gameObject.tag != "ItemDimeja") 
-            {
-                gameObject.tag = "ItemDimeja"; 
-                Debug.Log($"Item {tipeItem} ditaruh di meja. (Stok harian tidak bertambah karena sudah diberikan di awal hari)");
-            }
+            // Taruh di meja: hanya beri tag, TIDAK ubah stok sama sekali
+            gameObject.tag = "ItemDimeja";
         }
-        else 
-        { 
-            // Jika ditarik keluar dari meja atau dilepas di luar drop zone, item dihancurkan
-            // Tidak perlu mengurangi stok GameDataManager karena saat ditaruh pun tidak menambah stok
-            Destroy(gameObject); 
+        else
+        {
+            // Dilepas di luar meja: hancurkan saja, TIDAK ubah stok
+            Destroy(gameObject);
         }
     }
 }
