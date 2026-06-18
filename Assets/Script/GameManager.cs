@@ -77,15 +77,13 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("<color=orange>[GameManager]</color> Shift selesai. Membuka laporan harian.");
         
-        // Membuka UI laporan harian terlebih dahulu sebelum memicu transisi
-        if (laporanHarianScript != null)
-        {
-            laporanHarianScript.TampilkanLaporan();
-        }
-        else
-        {
-            SelesaiTampilkanLaporan(); // Fallback langsung jalan jika lupa memasang referensi UI
-        }
+        // // Membuka UI laporan harian terlebih dahulu sebelum memicu transisi
+        // if (laporanHarianScript != null)
+        // {
+        //     laporanHarianScript.TampilkanLaporan();
+        // }
+        SelesaiTampilkanLaporan(); // Fallback langsung jalan jika lupa memasang referensi UI
+        
     }
 
     /// <summary>Dipanggil oleh LaporanHarianUI setelah tombol lanjut ditekan.</summary>

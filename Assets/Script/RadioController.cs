@@ -37,7 +37,7 @@ public class RadioController : MonoBehaviour
 
     // Nama parameter di AudioMixer (harus sama persis seperti yang di-Expose)
     private const string PARAM_BGM   = "musicVolume";   // channel Music / BGM
-    private const string PARAM_RADIO = "Radio";          // channel Radio (sesuai gambar mixer)
+    private const string PARAM_RADIO = "radioVolume";          // channel Radio (sesuai gambar mixer)
 
     // ──────────────────────────────────────────────────────────────────────
 

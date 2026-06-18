@@ -51,6 +51,7 @@ MonoBehaviour:
   musicSource: {fileID: 5074821551259103745}
   sfxSource: {fileID: 2641062733358413120}
   background: {fileID: 8300000, guid: 94a00c71bf16f6d4e8c2156922908aa8, type: 3}
+  vnClick: {fileID: 8300000, guid: 00b0e430bd7e56345abcc1f597be2ca3, type: 3}
   MainMenuBGM: {fileID: 0}
   Click: {fileID: 8300000, guid: 42cebff059fa5de438a66c52a52c2393, type: 3}
   pop: {fileID: 0}

@@ -20,18 +20,18 @@ public class LaporanHarianUI : MonoBehaviour
         panelLaporan.SetActive(true);
         Time.timeScale = 0f; // Menghentikan waktu gameplay (pause) saat laporan aktif
 
-        GameDataManager data = GameDataManager.Instance;
-        if (data != null)
-        {
-            txtMasuk.text  = $"Logistik : {data.totalLogistikMasuk}\nMedic    : {data.totalMedicMasuk}";
-            txtKeluar.text = $"Logistik : {data.totalLogistikKeluar}\nMedic    : {data.totalMedicKeluar}";
-            txtSisa.text   = $"Logistik : {data.logistik}\nMedic    : {data.firstAid}";
+        // GameDataManager data = GameDataManager.Instance;
+        // if (data != null)
+        // {
+        //     txtMasuk.text  = $"Logistik : {data.totalLogistikMasuk}\nMedic    : {data.totalMedicMasuk}";
+        //     txtKeluar.text = $"Logistik : {data.totalLogistikKeluar}\nMedic    : {data.totalMedicKeluar}";
+        //     txtSisa.text   = $"Logistik : {data.logistik}\nMedic    : {data.firstAid}";
             
-            if (txtWargaDibantu != null)
-            {
-                txtWargaDibantu.text = $"Warga Yang Dibantu:\n{data.wargaBerhasilDibantu} Orang";
-            }
-        }
+        //     if (txtWargaDibantu != null)
+        //     {
+        //         txtWargaDibantu.text = $"Warga Yang Dibantu:\n{data.wargaBerhasilDibantu} Orang";
+        //     }
+        // }
     }
 
     /// <summary>

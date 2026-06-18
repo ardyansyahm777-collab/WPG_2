@@ -2832,7 +2832,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RadioController
   audioMixer: {fileID: 24100000, guid: adaec1586cdd883499ff0ebdf1dd8656, type: 2}
-  radioClip: {fileID: 0}
+  radioClip: {fileID: 8300000, guid: d07e12a8c3b5b9f42a5c4900f4c86c19, type: 3}
   radioSource: {fileID: 1415081958}
   bgmDimVolume: 0.2
   bgmNormalVolume: 1

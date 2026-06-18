@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("---------- Audio Clip ----------")]
     public AudioClip background;
+    public AudioClip vnClick;
     public AudioClip MainMenuBGM; 
     public AudioClip Click;
     public AudioClip pop;
