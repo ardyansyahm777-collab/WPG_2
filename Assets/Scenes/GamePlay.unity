@@ -2124,12 +2124,17 @@ MonoBehaviour:
   title: Calendar
   description: Sekarang tanggal 28 desember, 1 hari pasca tsunami
   objectSprite: {fileID: 1717959649996741340, guid: 5f63be231598ede489a0e2aa27e3b597, type: 3}
-  daftarTanggal:
-  - {fileID: 1717959649996741340, guid: 5f63be231598ede489a0e2aa27e3b597, type: 3}
-  - {fileID: 7124085310537296089, guid: 5f63be231598ede489a0e2aa27e3b597, type: 3}
-  - {fileID: 7850843515612383992, guid: 5f63be231598ede489a0e2aa27e3b597, type: 3}
-  - {fileID: -7739069223202659573, guid: 5f63be231598ede489a0e2aa27e3b597, type: 3}
-  - {fileID: -9189931873119684638, guid: 5f63be231598ede489a0e2aa27e3b597, type: 3}
+  dataHarianKalender:
+  - spriteHariIni: {fileID: 1717959649996741340, guid: 5f63be231598ede489a0e2aa27e3b597, type: 3}
+    deskripsiHariIni: Sekarang tanggal 28 desember, 1 hari pasca tsunami
+  - spriteHariIni: {fileID: 7124085310537296089, guid: 5f63be231598ede489a0e2aa27e3b597, type: 3}
+    deskripsiHariIni: Sekarang tanggal 29 desember, 2 hari pasca tsunami
+  - spriteHariIni: {fileID: 7850843515612383992, guid: 5f63be231598ede489a0e2aa27e3b597, type: 3}
+    deskripsiHariIni: Sekarang tanggal 30 desember, 3 hari pasca tsunami
+  - spriteHariIni: {fileID: -7739069223202659573, guid: 5f63be231598ede489a0e2aa27e3b597, type: 3}
+    deskripsiHariIni: Sekarang tanggal 31 desember, 4 hari pasca tsunami
+  - spriteHariIni: {fileID: -9189931873119684638, guid: 5f63be231598ede489a0e2aa27e3b597, type: 3}
+    deskripsiHariIni: Sekarang tanggal 1 januari, 5  hari pasca tsunami
   uiManager: {fileID: 1016238012}
 --- !u!114 &1220845460
 MonoBehaviour:
@@ -2704,7 +2709,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 3516934927002047757, guid: adaec1586cdd883499ff0ebdf1dd8656, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: d07e12a8c3b5b9f42a5c4900f4c86c19, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

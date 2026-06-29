@@ -6,6 +6,7 @@ public class AudioManager : MonoBehaviour
     [Header("---------- Audio Source ----------")]
     public AudioSource musicSource;
     public AudioSource sfxSource;
+    public AudioSource bgmSource; // TAMBAHAN REKREASI BGM
 
     [Header("---------- Audio Clip ----------")]
     public AudioClip background;
@@ -44,11 +45,11 @@ public class AudioManager : MonoBehaviour
 
         if (currentSceneName == "MainMenu")
         {
-            if (MainMenuBGM != null && musicSource != null)
+            if (MainMenuBGM != null && bgmSource != null)
             {
-                musicSource.clip = MainMenuBGM;
-                musicSource.loop = true;
-                musicSource.Play();
+                bgmSource.clip = MainMenuBGM;
+                bgmSource.loop = true;
+                bgmSource.Play();
                 Debug.Log("[AudioManager] Musik Main Menu mulai diputar.");
             }
         }
@@ -96,7 +97,7 @@ public class AudioManager : MonoBehaviour
     {
         if (clip != null)
         {
-            musicSource.PlayOneShot(clip, volume);
+            bgmSource.PlayOneShot(clip, volume);
         }
     }
 }
