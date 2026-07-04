@@ -7,33 +7,33 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public struct DialogLine
 {
-    public string namaKarakter; // Nama karakter yang muncul (misal: Hartono)
-    [TextArea(3, 5)] public string isiDialog; // Isi teks dialog
+    public string namaKarakter;
+    [TextArea(3, 5)] public string isiDialog;
     
     [Header("Visual Settings")]
-    public Sprite spriteKarakter;    // Menggunakan Sprite agar bisa memilih aset gambar di Project folder
-    public Sprite spritePetunjuk;    // Gambar ilustrasi/sorotan untuk membantu tutorial pemain
-    public bool aktifkanPetunjuk;    // Centang jika ingin memunculkan gambar petunjuk pada baris ini
+    public Sprite spriteKarakter;    
+    public Sprite spritePetunjuk;    
+    public bool aktifkanPetunjuk;    
 }
 
 public class VisualNovelManager : MonoBehaviour
 {
     [Header("UI References")]
-    public TextMeshProUGUI txtNama; // Text untuk nama karakter
-    public TextMeshProUGUI txtDialog; // Text untuk isi dialog
-    public Image imgKarakter;         // Komponen UI Image tempat karakter Hartono dirender di Canvas
-    public Image imgPetunjukTutor;   // Komponen UI Image tempat ilustrasi tutorial dirender di Canvas
+    public TextMeshProUGUI txtNama; 
+    public TextMeshProUGUI txtDialog;
+    public Image imgKarakter;        
+    public Image imgPetunjukTutor; 
 
     [Header("Story Settings")]
-    public DialogLine[] ceritaTutorial; // Array penampung baris cerita tutorial
-    public float typingSpeed = 0.04f; // Kecepatan efek mengetik
-    public string nextSceneName = "CutScene"; // Nama scene tujuan setelah tutorial usai
-    public float delaySetelahMengetik = 1.0f; // Variabel pengaturan durasi delay (1 detik)
+    public DialogLine[] ceritaTutorial;
+    public float typingSpeed = 0.04f;
+    public string nextSceneName = "CutScene";
+    public float delaySetelahMengetik = 1.0f;
 
-    private int indexDialog = 0; // Index baris dialog yang sedang berjalan
-    private bool sedangMengetik = false; // Status apakah teks masih berjalan atau tidak
-    private bool bolehKlikNext = true; // Penanda apakah input Next Line diizinkan atau sedang dikunci delay
-    private string dialogAktifLengkap = ""; // Menyimpan teks utuh dari line aktif
+    private int indexDialog = 0; 
+    private bool sedangMengetik = false;
+    private bool bolehKlikNext = true; 
+    private string dialogAktifLengkap = "";
 
     void Start()
     {

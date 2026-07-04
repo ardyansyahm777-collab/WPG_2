@@ -75,7 +75,8 @@ public class PlayerServe : MonoBehaviour
             // Catat ke statistik laporan
             data.totalLogistikKeluar += npc.kebutuhan.logistik;
             data.totalMedicKeluar    += npc.kebutuhan.firstAid;
-            data.wargaBerhasilDibantu++;
+            data.wargaDibantu++;
+            data.totalWargaDibantu++;
 
             npc.TriggerKeluar();
             HapusItemDiMeja();

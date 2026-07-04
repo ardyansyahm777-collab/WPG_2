@@ -110,7 +110,7 @@ public class NPCQueue : MonoBehaviour
         if (found != null)
         {
             npcContainer = found.GetComponent<RectTransform>();
-            if (npcContainer != null) return npcContainer; // Sudah diperbaiki dari 'parent' menjadi 'npcContainer'
+            if (npcContainer != null) return npcContainer; 
         }
 
         Canvas canvas = Object.FindFirstObjectByType<Canvas>();
@@ -127,9 +127,11 @@ public class NPCQueue : MonoBehaviour
         npcAktif = null;
         Debug.Log($"<color=cyan>[NPCQueue]</color> NPC selesai. Total spawn: {totalSpawn}/{targetNPC}");
 
-        if (CekShiftSelesai()) return;
-
-        StartCoroutine(SpawnSetelahDelay(spawnInterval));
+        // Jika NPC belum mencapai target hari ini, jadwalkan spawn berikutnya
+        if (totalSpawn < targetNPC)
+        {
+            StartCoroutine(SpawnSetelahDelay(spawnInterval));
+        }
     }
 
     // =============================================
@@ -160,14 +162,19 @@ public class NPCQueue : MonoBehaviour
         SpawnNPC();
     }
 
-    bool CekShiftSelesai()
+    /// <summary>
+    /// Mengecek apakah seluruh NPC pada hari ini sudah selesai dilayani dan keluar dari game.
+    /// </summary>
+    public bool CekShiftSelesai()
     {
         if (!shiftAktif) return true;
-        if (totalSpawn < targetNPC || npcAktif != null) return false;
 
-        shiftAktif = false;
-        Debug.Log("<color=orange>[NPCQueue]</color> Semua NPC selesai. Memberi tahu GameManager.");
-        Object.FindFirstObjectByType<GameManager>()?.NPCFinishedTurn();
-        return true;
+        // Shift benar-benar selesai jika target jumlah NPC sudah terpenuhi DAN sudah tidak ada NPC aktif di meja counter
+        if (totalSpawn >= targetNPC && npcAktif == null)
+        {
+            shiftAktif = false;
+            return true;
+        }
+        return false;
     }
 }

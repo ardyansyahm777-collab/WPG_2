@@ -201,7 +201,7 @@ public class NPC : MonoBehaviour
         if (bubbleForcer != null) bubbleForcer.Sembunyikan();
 
         if (anim != null) anim.SetTrigger("Exit");
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 2f); // NPC dihancurkan setelah 2 detik (durasi animasi keluar)
 
         StartCoroutine(NotifikasiKeluar());
     }
@@ -210,5 +210,25 @@ public class NPC : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         Object.FindFirstObjectByType<NPCQueue>()?.RemoveForntNPC();
+    }
+
+    // =============================================
+    // UNITY LIFECYCLE EXTENSION
+    // =============================================
+    void OnDestroy()
+    {
+        // Supaya tidak memicu laporan harian saat ganti scene / keluar game secara paksa
+        if (!gameObject.scene.isLoaded) return;
+
+        NPCQueue queue = Object.FindFirstObjectByType<NPCQueue>();
+        if (queue != null)
+        {
+            // Mengecek apakah NPC ini adalah penutup dari barisan shift hari ini
+            if (queue.CekShiftSelesai())
+            {
+                Debug.Log("<color=orange>[NPC]</color> NPC terakhir telah sepenuhnya keluar & hancur. Membuka laporan harian.");
+                Object.FindFirstObjectByType<GameManager>()?.NPCFinishedTurn();
+            }
+        }
     }
 }

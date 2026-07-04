@@ -16,7 +16,7 @@ public class RadioController : MonoBehaviour
     [Tooltip("AudioClip suara siaran radio (loop).")]
     public AudioClip radioClip;
 
-    [Tooltip("AudioSource khusus untuk radio. Bisa dibuat terpisah atau pakai sfxSource AudioManager.")]
+    [Tooltip("AudioSource khusus untuk radio. Pastikan ini BEDA dengan AudioSource untuk BGM.")]
     public AudioSource radioSource;
 
     [Header("Pengaturan Volume")]
@@ -36,8 +36,8 @@ public class RadioController : MonoBehaviour
     private Coroutine fadeCoroutine;
 
     // Nama parameter di AudioMixer (harus sama persis seperti yang di-Expose)
-    private const string PARAM_BGM   = "musicVolume";   // channel Music / BGM
-    private const string PARAM_RADIO = "radioVolume";          // channel Radio (sesuai gambar mixer)
+    private const string PARAM_BGM   = "bgmVolume";   // channel Music / BGM
+    private const string PARAM_RADIO = "radioVolume";  // channel Radio (sesuai gambar mixer)
 
     // ──────────────────────────────────────────────────────────────────────
 
@@ -45,11 +45,13 @@ public class RadioController : MonoBehaviour
     {
         if (radioSource == null)
         {
-            // Buat AudioSource lokal kalau belum di-assign
+            // Buat AudioSource lokal khusus radio kalau belum di-assign di Inspector
             radioSource = gameObject.AddComponent<AudioSource>();
-            radioSource.loop = true;
-            radioSource.playOnAwake = false;
         }
+
+        // Setup property radioSource agar aman dan tidak menimpa settingan global
+        radioSource.loop = true;
+        radioSource.playOnAwake = false;
 
         if (radioClip != null)
             radioSource.clip = radioClip;
@@ -80,16 +82,17 @@ public class RadioController : MonoBehaviour
 
     private void TurnRadioOn()
     {
-        if (!radioSource.isPlaying)
+        // Jalankan suara radio jika belum berputar
+        if (radioSource != null && !radioSource.isPlaying)
             radioSource.Play();
 
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
         fadeCoroutine = StartCoroutine(FadeRoutine(
-            bgmTarget:   bgmDimVolume,   // BGM mengecil
+            bgmTarget:   bgmDimVolume,   // BGM mengecil (tidak mati)
             radioTarget: bgmNormalVolume  // Radio penuh
         ));
 
-        Debug.Log("[RadioController] Radio ON.");
+        Debug.Log("[RadioController] Radio ON. BGM mengecil.");
     }
 
     // ── OFF ────────────────────────────────────────────────────────────────
@@ -98,17 +101,16 @@ public class RadioController : MonoBehaviour
     {
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
         fadeCoroutine = StartCoroutine(FadeRoutine(
-            bgmTarget:   bgmNormalVolume, // BGM kembali normal
-            radioTarget: 0f,              // Radio mute
-            onComplete:  () => radioSource.Stop()
+            bgmTarget:   bgmNormalVolume, // BGM kembali normal (membesar)
+            radioTarget: 0f                // Radio kembali mute di mixer
         ));
 
-        Debug.Log("[RadioController] Radio OFF.");
+        Debug.Log("[RadioController] Radio OFF. BGM kembali normal.");
     }
 
     // ── COROUTINE FADE ─────────────────────────────────────────────────────
 
-    private IEnumerator FadeRoutine(float bgmTarget, float radioTarget, System.Action onComplete = null)
+    private IEnumerator FadeRoutine(float bgmTarget, float radioTarget)
     {
         float elapsed = 0f;
 
@@ -130,8 +132,12 @@ public class RadioController : MonoBehaviour
         // Pastikan nilai akhir tepat
         SetMixerVolume(PARAM_BGM,   bgmTarget);
         SetMixerVolume(PARAM_RADIO, radioTarget);
-
-        onComplete?.Invoke();
+        
+        // Jika radio dimatikan dan volume sudah benar-benar 0 (mute), kita pause/stop radioSource-nya
+        if (radioTarget <= 0f && radioSource != null && radioSource.isPlaying)
+        {
+            radioSource.Stop();
+        }
     }
 
     // ── HELPER ─────────────────────────────────────────────────────────────

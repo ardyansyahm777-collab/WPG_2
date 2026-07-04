@@ -1,13 +1,5 @@
 using UnityEngine;
 using System.Collections;
-
-/// <summary>
-/// Mengontrol tampil/sembunyinya bubble chat NPC.
-/// Dipasang di child object BubbleChat milik NPC.
-/// 
-/// PERBAIKAN: SetActive dilakukan SEBELUM StartCoroutine agar tidak gagal
-/// saat object sedang inactive.
-/// </summary>
 public class BubbleChatForcer : MonoBehaviour
 {
     [Header("Settings")]

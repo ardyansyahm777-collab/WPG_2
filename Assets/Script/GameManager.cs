@@ -77,13 +77,11 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("<color=orange>[GameManager]</color> Shift selesai. Membuka laporan harian.");
         
-        // // Membuka UI laporan harian terlebih dahulu sebelum memicu transisi
-        // if (laporanHarianScript != null)
-        // {
-        //     laporanHarianScript.TampilkanLaporan();
-        // }
-        SelesaiTampilkanLaporan(); // Fallback langsung jalan jika lupa memasang referensi UI
-        
+        // Membuka UI laporan harian terlebih dahulu sebelum memicu transisi
+        if (laporanHarianScript != null)
+        {
+            laporanHarianScript.TampilkanLaporan();
+        }
     }
 
     /// <summary>Dipanggil oleh LaporanHarianUI setelah tombol lanjut ditekan.</summary>
@@ -101,10 +99,10 @@ public class GameManager : MonoBehaviour
     {
         if (AudioManager.Instance != null && AudioManager.Instance.background != null)
         {
-            AudioManager.Instance.musicSource.Stop();
-            AudioManager.Instance.musicSource.clip = AudioManager.Instance.background;
-            AudioManager.Instance.musicSource.loop = true;
-            AudioManager.Instance.musicSource.Play();
+            AudioManager.Instance.bgmSource.Stop();
+            AudioManager.Instance.bgmSource.clip = AudioManager.Instance.background;
+            AudioManager.Instance.bgmSource.loop = true;
+            AudioManager.Instance.bgmSource.Play();
         }
     }
 
