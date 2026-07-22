@@ -26,17 +26,17 @@ public class HoverHighlight : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         Image img = GetComponent<Image>();
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
 
-        if (img != null) 
-        { 
+        if (img != null)
+        {
             // Membuat instance material baru agar tidak mengubah semua objek yang pakai material sama
-            img.material = new Material(img.material); 
-            targetMaterial = img.material; 
-            isUI = true; 
+            img.material = new Material(img.material);
+            targetMaterial = img.material;
+            isUI = true;
         }
-        else if (sr != null) 
-        { 
-            targetMaterial = sr.material; 
-            isUI = false; 
+        else if (sr != null)
+        {
+            targetMaterial = sr.material;
+            isUI = false;
         }
 
         if (targetMaterial != null)
@@ -82,6 +82,11 @@ public class HoverHighlight : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
 
         currentThickness = targetT;
-        targetMaterial.SetFloat(thicknessProp, currentThickness);
+
+        // JALAN KELUAR: Tambahkan null-check di sini sebelum baris 85
+        if (targetMaterial != null)
+        {
+            targetMaterial.SetFloat(thicknessProp, currentThickness);
+        }
     }
 }

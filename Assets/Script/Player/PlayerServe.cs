@@ -37,11 +37,14 @@ public class PlayerServe : MonoBehaviour
     // =============================================
     public void buttonBantuanClick()
     {
+        Debug.Log("[PlayerServe] Tombol Bantuan diklik!");  
         if (queue == null) queue = Object.FindFirstObjectByType<NPCQueue>();
 
         NPC npc = queue != null ? queue.GetForntNPC() : null;
+        Debug.Log($"[PlayerServe] NPC aktif: {npc}, kuponDiterima: {npc?.SudahDiterimaKupon()}");  
         if (npc == null) return;
         if (!npc.SudahTriggerDialog()) return;
+        // if (!npc.SudahDiterimaKupon()) return;
 
         GameDataManager data = GameDataManager.Instance;
         if (data == null) return;

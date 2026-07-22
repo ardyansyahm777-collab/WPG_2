@@ -11,6 +11,7 @@ public class NPC : MonoBehaviour
     [Header("Data & Dialog")]
     public KebutuhanSet kebutuhan;
     public DialogData daftarDialog;
+    public KuponInfo kupon; //New: KuponInfo untuk NPC ini
 
     // =============================================
     // UI REFERENCES
@@ -44,6 +45,8 @@ public class NPC : MonoBehaviour
 
     private GameManager gameManager;
     private BubbleChatForcer bubbleForcer;
+    private bool kuponDiterima = false;   // NEW
+    private KuponPanelUI kuponPanelUI;    // NEW
     private Animator anim;
 
     // =============================================
@@ -53,6 +56,8 @@ public class NPC : MonoBehaviour
     {
         anim        = GetComponent<Animator>();
         gameManager = Object.FindFirstObjectByType<GameManager>();
+        kuponPanelUI = Object.FindFirstObjectByType<KuponPanelUI>(FindObjectsInactive.Include);
+        Debug.Log($"[NPC] kuponPanelUI ditemukan: {kuponPanelUI != null}");  // TEMP
 
         if (bubbleChatObject != null)
         {
@@ -76,6 +81,9 @@ public class NPC : MonoBehaviour
     {
         if (avatarImage != null) avatarImage.sprite = img;
     }
+
+    public void SetKupon(KuponInfo data) => kupon = data;      // NEW
+    public bool SudahDiterimaKupon() => kuponDiterima;          // NEW
 
     // Dibiarkan agar tidak ada error compile di script lain yang memanggil ini
     public void SetTargetPos(Vector2 pos) { }
@@ -108,7 +116,7 @@ public class NPC : MonoBehaviour
     // =============================================
     public void TerimaItem(int l, int f)
     {
-        if (sedangKeluar) return;
+        if (sedangKeluar || !kuponDiterima) return; // NEW: cegah servis sebelum kupon di-acc
         if (CekTerpenuhi(l, f)) TriggerKeluar();
         else Salah();
     }
@@ -188,7 +196,33 @@ public class NPC : MonoBehaviour
             dialogFinal = string.Format(mentah, kebutuhan.firstAid);
 
         TampilkanBubble(dialogFinal);
+        kuponPanelUI?.Tampilkan(this, kupon);
     }
+    
+    public void OnKeputusanKupon(bool diterima)
+{
+    if (sedangKeluar) return;
+
+    bool benar = (diterima == kupon.asli);
+
+    if (GameDataManager.Instance != null)
+    {
+        if (benar) GameDataManager.Instance.kuponBenarHariIni++;
+        else       GameDataManager.Instance.kuponSalahHariIni++;
+    }
+
+    if (diterima)
+    {
+        kuponDiterima = true; // buka akses servis logistik di PlayerServe
+    }
+    else
+    {
+        TampilkanBubble(kupon.asli
+            ? "Tapi kupon saya asli! Kenapa ditolak?"
+            : "Baik, saya mengerti.");
+        StartCoroutine(TriggerKeluarSetelahDelay(1.2f));
+    }
+}
 
     // =============================================
     // EXIT

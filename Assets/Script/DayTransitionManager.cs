@@ -7,7 +7,7 @@ public class DayTransitionManager : MonoBehaviour
 {
     [Header("Scene Names")]
     public string tutorialSceneName = "Tutorial"; // Ditambahkan scene tutorial
-    public string cutsceneSceneName = "DayCard";
+    public string cutsceneSceneName = "CutScene";
     public string gameplaySceneName = "Gameplay";
 
     [Header("Fade — Image ini HARUS child dari GameObject ini")]

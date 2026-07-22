@@ -15,6 +15,8 @@ public class GameDataManager : MonoBehaviour
     public int totalLogistikKeluar;
     public int totalMedicKeluar;
     public int wargaDibantu;
+    public int kuponBenarHariIni;   // NEW
+    public int kuponSalahHariIni;   // NEW
 
     void Awake()
     {
@@ -44,5 +46,7 @@ public class GameDataManager : MonoBehaviour
         totalLogistikKeluar = 0;
         totalMedicKeluar   = 0;
         wargaDibantu = 0;
+        kuponBenarHariIni = 0;  // NEW
+        kuponSalahHariIni = 0;  // NEW
     }
 }

@@ -23,6 +23,7 @@ public class NPCQueue : MonoBehaviour
 
     [Header("Referensi")]
     public KebutuhanGenerator generator;
+    public KuponGenerator kuponGenerator;
 
     [Header("Pengaturan Spawn")]
     [Tooltip("Jeda sebelum NPC berikutnya muncul setelah NPC sebelumnya pergi (detik).")]
@@ -74,6 +75,7 @@ public class NPCQueue : MonoBehaviour
 
         npc.SetKebutuhan(generator.GetRandomKebutuhan());
         npc.SetVisual(generator.GetRandomSprite());
+        npc.SetKupon(kuponGenerator.Generate(generator.indexHariSekarang + 1));
 
         RectTransform npcRect = obj.GetComponent<RectTransform>();
         if (npcRect != null)
