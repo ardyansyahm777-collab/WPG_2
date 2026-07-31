@@ -59,6 +59,18 @@ public class DayTransitionManager : MonoBehaviour
         while (!load.isDone) yield return null;
         yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
     }
+    public void transisiScene(string sceneName)
+    {
+        StartCoroutine(transisi(sceneName));
+    }
+    IEnumerator transisi(string sceneName)
+    {
+        yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
+        // FIX: Load tutorialSceneName, bukan gameplaySceneName
+        AsyncOperation load = SceneManager.LoadSceneAsync(sceneName);
+        while (!load.isDone) yield return null;
+        yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
+    }
 
     IEnumerator RoutineKeGameplay()
     {

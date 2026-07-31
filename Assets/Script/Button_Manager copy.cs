@@ -80,8 +80,45 @@ public class Button_Manager : MonoBehaviour
 
     public void SetResolution(int resolutionIndex)
     {
+        if (resolutions == null || resolutionIndex >= resolutions.Length) return;
+
+        ButtonClick();
+
         Resolution resolution = resolutions[resolutionIndex];
+        
+        // 1. Ubah resolusi layar
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+
+        // 2. Paksa semua Canvas di Scene untuk re-layout dan update skala secara instan
+        StartCoroutine(RebuildCanvasLayouts());
+    }
+
+    private IEnumerator RebuildCanvasLayouts()
+    {
+        // Tunggu 1 frame agar engine Unity selesai menerapkan resolusi baru
+        yield return null;
+
+        // Cari semua Canvas aktif di scene (Canvas Utama & Canvas Transisi)
+        Canvas[] allCanvases = Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None);
+        foreach (Canvas canvas in allCanvases)
+        {
+            // Re-evaluasi Canvas Scaler
+            CanvasScaler scaler = canvas.GetComponent<CanvasScaler>();
+            if (scaler != null)
+            {
+                scaler.enabled = false;
+                scaler.enabled = true; // Refresh paksa komponen scaler
+            }
+
+            // Rebuild UI RectTransform
+            RectTransform rect = canvas.GetComponent<RectTransform>();
+            if (rect != null)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+            }
+        }
+
+        Debug.Log("[Button_Manager] Skala Canvas berhasil diperbarui ke resolusi baru.");
     }
 
     // --- LOGIKA TOMBOL ---
@@ -126,6 +163,26 @@ public void goToGameplay()
         SceneManager.LoadScene("GamePlay");
     }
 }
+    public void creditButton()
+    {
+        ButtonClick();
+
+        // Hentikan musik menu
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.musicSource.Stop();
+
+        // Tutorial → CutScene → Gameplay
+        if (DayTransitionManager.Instance != null)
+        {
+            DayTransitionManager.Instance.transisiScene("credit");
+        }
+        else
+        {
+            Debug.LogWarning("[Button_Manager] DayTransitionManager tidak ditemukan, load scene langsung.");
+            // fallback langsung ke Gameplay
+            SceneManager.LoadScene("credit");
+        }
+    }
 
 
     public void settingButton()

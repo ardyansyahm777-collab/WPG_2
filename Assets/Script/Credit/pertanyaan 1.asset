@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98656037627615c4291079850f92e2e0, type: 3}
+  m_Name: pertanyaan 1
+  m_EditorClassIdentifier: Assembly-CSharp::QuestionData
+  questionText: Susah gak sih buat game?
+  answerText: kalau menurut kami susah susah gampang sih, susahnya waktu tahap pengembangan
+    dan enaknya waktu brainstroming wkwkwkwk
+  type: 2
+  expressionName: hehe

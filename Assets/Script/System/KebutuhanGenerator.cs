@@ -14,6 +14,7 @@ public class DayConfig
 
 public class KebutuhanGenerator : MonoBehaviour
 {
+    [Tooltip("Fallback jika DocumentDataGenerator tidak ditemukan di Scene")]
     public Sprite[] kumpulanGambarNPC; 
     public List<KebutuhanSet> kemungkinanKebutuhan;
     public List<DayConfig> daftarHari;
@@ -21,7 +22,6 @@ public class KebutuhanGenerator : MonoBehaviour
 
     void Awake()
     {
-        // Pengisian daftar kebutuhan acak default bawaan
         kemungkinanKebutuhan = new List<KebutuhanSet>()
         {
             new KebutuhanSet { logistik = 1, firstAid = 0 },
@@ -35,10 +35,28 @@ public class KebutuhanGenerator : MonoBehaviour
 
     public KebutuhanSet GetRandomKebutuhan() => kemungkinanKebutuhan[Random.Range(0, kemungkinanKebutuhan.Count)];
 
+    /// <summary>
+    /// Mengambil gambar acak (Digunakan sebagai Fallback untuk Story NPC atau saat Generator rusak)
+    /// </summary>
     public Sprite GetRandomSprite()
     {
-        if (kumpulanGambarNPC.Length == 0) return null;
-        return kumpulanGambarNPC[Random.Range(0, kumpulanGambarNPC.Length)];
+        // 1. Cek dari DocumentDataGenerator yang baru (menggunakan NPCRandomProfile)
+        if (DocumentDataGenerator.Instance != null)
+        {
+            NPCRandomProfile profileAcak = DocumentDataGenerator.Instance.GetRandomProfile();
+            if (profileAcak != null && profileAcak.avatarSprite != null)
+            {
+                return profileAcak.avatarSprite;
+            }
+        }
+
+        // 2. Fallback: Gunakan kumpulanGambarNPC bawaan
+        if (kumpulanGambarNPC != null && kumpulanGambarNPC.Length > 0)
+        {
+            return kumpulanGambarNPC[Random.Range(0, kumpulanGambarNPC.Length)];
+        }
+
+        return null;
     }  
 
     public int GetTargetNPC()

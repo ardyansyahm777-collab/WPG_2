@@ -1130,6 +1130,7 @@ GameObject:
   - component: {fileID: 8173741195009006842}
   - component: {fileID: 1303301167702574663}
   - component: {fileID: 2361835371493167470}
+  - component: {fileID: 7088334785259531907}
   m_Layer: 0
   m_Name: kupon
   m_TagString: Untagged
@@ -1222,6 +1223,18 @@ MonoBehaviour:
   imgStempel: {fileID: 3624835598629266065}
   btnTerima: {fileID: 8990966222375124819}
   btnTolak: {fileID: 3755892017232442059}
+--- !u!114 &7088334785259531907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7949340654135180262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ac3b63aa640c644b4787218a3cc01a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickReleaseScript
 --- !u!1 &8124589941637455527
 GameObject:
   m_ObjectHideFlags: 0

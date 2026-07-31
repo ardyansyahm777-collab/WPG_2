@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc2fade1440a2c4ead423b492da0fcc, type: 3}
   m_Name: DialogNpc
   m_EditorClassIdentifier: Assembly-CSharp::DialogData
+  dialogUtamaSpontan: 
   dialogLogistik:
   - Tolong bawakan {0} logistik ya
   - Tolong bawakan {0} logistik ya

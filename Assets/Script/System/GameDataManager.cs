@@ -15,30 +15,26 @@ public class GameDataManager : MonoBehaviour
     public int totalLogistikKeluar;
     public int totalMedicKeluar;
     public int wargaDibantu;
-    public int kuponBenarHariIni;   // NEW
-    public int kuponSalahHariIni;   // NEW
+    public int kuponBenarHariIni;
+    public int kuponSalahHariIni;
+
+    [Header("Hidden Metrics (Ending Tracker)")]
+    public int compliancePoint = 0; 
+    public int humanityPoint = 0;   
+    public int corruptionPoint = 0; 
 
     void Awake()
     {
-        // Jika sudah ada Instance lain yang hidup dari hari sebelumnya...
         if (Instance != null && Instance != this)
         {
-            // ...hancurkan objek yang baru lahir ini agar data lama di Instance yang asli TIDAK tertimpa!
             Destroy(gameObject);
             return;
         }
         
-        // Jika ini adalah pertama kali game dijalankan (Hari 1)
         Instance = this;
-        
-        // PERINTAH UTAMA: Amankan objek ini agar tidak hancur saat LoadScene hari berikutnya
         DontDestroyOnLoad(gameObject);
     }
 
-    /// <summary>
-    /// Membersihkan data statistik harian setiap kali hari baru dimulai.
-    /// Stok (logistik & firstAid) diisi ulang oleh GameManager setelah fungsi ini.
-    /// </summary>
     public void ResetStatistikHarian()
     {
         totalLogistikMasuk = 0;
@@ -46,7 +42,14 @@ public class GameDataManager : MonoBehaviour
         totalLogistikKeluar = 0;
         totalMedicKeluar   = 0;
         wargaDibantu = 0;
-        kuponBenarHariIni = 0;  // NEW
-        kuponSalahHariIni = 0;  // NEW
+        kuponBenarHariIni = 0;
+        kuponSalahHariIni = 0;
+    }
+
+    public void TambahMetrik(int compliance, int humanity, int corruption = 0)
+    {
+        compliancePoint += compliance;
+        humanityPoint += humanity;
+        corruptionPoint += corruption;
     }
 }

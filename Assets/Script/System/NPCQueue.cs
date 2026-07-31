@@ -7,6 +7,19 @@ using UnityEngine;
 /// NPC bergerak via animasi (NPC_IN), dan dialog dipicu via Animation Event,
 /// bukan lewat pengecekan jarak di Update().
 /// </summary>
+[System.Serializable]
+public class StoryNPCSchedule
+{
+    [Tooltip("Hari ke berapa NPC ini muncul (1 = Hari 1, dst - sesuai penomoran 'Hari X' di game).")]
+    public int hari;
+
+    [Tooltip("Urutan spawn ke berapa di hari itu (0 = NPC pertama yang muncul hari itu, 1 = NPC kedua, dst).")]
+    public int urutanSpawnKe = 0;
+
+    [Tooltip("Prefab Story NPC yang datanya (Kupon/KTP/Voucher/Dialog) sudah diisi manual lewat Inspector.")]
+    public GameObject npcPrefabCerita;
+}
+
 public class NPCQueue : MonoBehaviour
 {
     // =============================================
@@ -24,6 +37,11 @@ public class NPCQueue : MonoBehaviour
     [Header("Referensi")]
     public KebutuhanGenerator generator;
     public KuponGenerator kuponGenerator;
+    public VoucherGenerator voucherGenerator;
+
+    [Header("Story NPC (Terjadwal)")]
+    [Tooltip("NPC cerita (Teuku Rahman, dr. Maya, dll) yang muncul di hari & urutan tertentu, menyelip di antara NPC acak.")]
+    public List<StoryNPCSchedule> jadwalStoryNPC = new List<StoryNPCSchedule>();
 
     [Header("Pengaturan Spawn")]
     [Tooltip("Jeda sebelum NPC berikutnya muncul setelah NPC sebelumnya pergi (detik).")]
@@ -52,50 +70,106 @@ public class NPCQueue : MonoBehaviour
     // =============================================
     void SpawnNPC()
     {
-        if (npcPrefab == null || generator == null) return;
+        if (generator == null) return;
         if (totalSpawn >= targetNPC) return;
-        if (npcAktif != null) return; // masih ada NPC aktif
+        if (npcAktif != null) return;
 
         Transform parent = ResolveParent();
-        if (parent == null)
-        {
-            Debug.LogError("[NPCQueue] Parent tidak ditemukan! Assign npcContainer di Inspector.");
-            return;
-        }
+        if (parent == null) return;
 
-        GameObject obj = Instantiate(npcPrefab, parent);
+        GameObject prefabUntukSpawn = ResolvePrefabSpawnBerikutnya();
+        if (prefabUntukSpawn == null) return;
 
+        GameObject obj = Instantiate(prefabUntukSpawn, parent);
         NPC npc = obj.GetComponent<NPC>();
+
         if (npc == null)
         {
-            Debug.LogError("[NPCQueue] Prefab tidak punya komponen NPC.cs!");
             Destroy(obj);
             return;
         }
 
-        npc.SetKebutuhan(generator.GetRandomKebutuhan());
-        npc.SetVisual(generator.GetRandomSprite());
-        npc.SetKupon(kuponGenerator.Generate(generator.indexHariSekarang + 1));
+        if (npc.isStoryNPC)
+        {
+            // Story NPC datanya (Kebutuhan/Kupon/KTP/Voucher/Dialog) SUDAH diisi
+            // manual lewat Inspector prefab - jangan ditimpa oleh generator acak.
+            Debug.Log($"<color=magenta>[NPCQueue]</color> Spawn Story NPC terjadwal: {obj.name}");
+        }
+        else
+        {
+            // Set Kebutuhan Logistik/Medic bawaan[cite: 21]
+            npc.SetKebutuhan(generator.GetRandomKebutuhan());
+
+            // Ambil Gambar & Dokumen yang SINKRON dari DocumentDataGenerator
+            if (DocumentDataGenerator.Instance != null)
+            {
+                // 1. Ambil Profile Visual (Sprite + Gender + Usia)
+                NPCRandomProfile profile = DocumentDataGenerator.Instance.GetRandomProfile();
+
+                if (profile != null)
+                {
+                    // Set Visual Gambar NPC
+                    npc.SetVisual(profile.avatarSprite);
+
+                    // Generate Kupon & KTP SEKALIGUS dari nama/tanggal lahir yang SAMA,
+                    // supaya kedua dokumen konsisten (bisa dibandingkan pemain).
+                    DocumentDataGenerator.Instance.GenerateNPCDocuments(
+                        profile, generator.indexHariSekarang + 1,
+                        out KuponInfo matchedKupon, out KTPInfo matchedKtp);
+
+                    npc.SetKupon(matchedKupon);
+                    npc.SetKTP(matchedKtp);
+                }
+            }
+            else
+            {
+                // Fallback jika DocumentDataGenerator tidak ada[cite: 21]
+                npc.SetVisual(generator.GetRandomSprite());
+                npc.SetKupon(kuponGenerator.Generate(generator.indexHariSekarang + 1));
+            }
+
+            // Generate voucher (kupon sembako/medis) sebagai dokumen referensi.
+            // Nomor registrasinya WAJIB sama dengan Kupon (Kartu Bantuan) di atas.
+            if (voucherGenerator != null && npc.kupon != null)
+            {
+                npc.SetVoucher(voucherGenerator.Generate(generator.indexHariSekarang + 1, npc.kupon.nomorRegistrasi));
+            }
+        }
 
         RectTransform npcRect = obj.GetComponent<RectTransform>();
-        if (npcRect != null)
+        if (npcRect != null && spawnPoint != null)
         {
-            if (spawnPoint != null)
-                npcRect.anchoredPosition = spawnPoint.anchoredPosition;
-            else
-                Debug.LogWarning("[NPCQueue] spawnPoint belum di-assign! NPC mungkin muncul di posisi salah. Assign Point_1 di Inspector.");
+            npcRect.anchoredPosition = spawnPoint.anchoredPosition;
         }
 
         npcAktif = npc;
         totalSpawn++;
 
-        Debug.Log($"<color=cyan>[NPCQueue]</color> Spawn NPC #{totalSpawn}/{targetNPC} di posisi {(spawnPoint != null ? spawnPoint.anchoredPosition.ToString() : "default")}");
-
         Animator anim = obj.GetComponent<Animator>();
-        if (anim != null)
-            anim.SetTrigger("NPC_IN");
-        else
-            Debug.LogWarning("[NPCQueue] NPC tidak punya Animator! Pasang Animator Controller.");
+        if (anim != null) anim.SetTrigger("NPC_IN");
+    }
+
+    /// <summary>
+    /// Cek apakah spawn slot berikutnya (hari sekarang + urutan spawn ke berapa)
+    /// punya Story NPC terjadwal. Kalau ada, pakai prefab itu. Kalau tidak,
+    /// fallback ke npcPrefab generic (NPC acak).
+    /// </summary>
+    private GameObject ResolvePrefabSpawnBerikutnya()
+    {
+        int hariSekarang = generator.indexHariSekarang + 1;
+
+        if (jadwalStoryNPC != null)
+        {
+            foreach (StoryNPCSchedule jadwal in jadwalStoryNPC)
+            {
+                if (jadwal.hari == hariSekarang && jadwal.urutanSpawnKe == totalSpawn && jadwal.npcPrefabCerita != null)
+                {
+                    return jadwal.npcPrefabCerita;
+                }
+            }
+        }
+
+        return npcPrefab;
     }
 
     IEnumerator SpawnSetelahDelay(float delay)

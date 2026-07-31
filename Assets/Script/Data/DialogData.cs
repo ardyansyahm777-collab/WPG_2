@@ -1,14 +1,14 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewDialogData", menuName = "NPC/Dialog Data")]
-
-// untuk data dialog dan sudah ditaruh didalam folder data
 public class DialogData : ScriptableObject
 {
-    [Header("Gunakan {0} untuk angka")]
+    [Header("1. DIALOG CERITA UNIK / SPONTAN (UTAMA)")]
+    [TextArea(3, 10)] 
+    public string dialogUtamaSpontan;
+
+    [Header("2. DIALOG GENERIK (FALLBACK JIKA DIALOG UTAMA KOSONG)")]
     [TextArea(3, 10)] public string[] dialogLogistik;
     [TextArea(3, 10)] public string[] dialogFirstAid;
-    
-    [Header("Gunakan {0} untuk Logistik, {1} untuk First Aid")]
     [TextArea(3, 10)] public string[] dialogKeduanya;
 }

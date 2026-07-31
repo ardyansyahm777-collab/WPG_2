@@ -353,6 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d15bc5b0d4563614bbed6dd3209480cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPC
+  isStoryNPC: 0
   kebutuhan:
     logistik: 0
     firstAid: 0
@@ -369,8 +370,6 @@ MonoBehaviour:
   avatarImage: {fileID: 6728207925742584164}
   logistikText: {fileID: 0}
   firstAidText: {fileID: 0}
-  moveSpeed: 8
-  maxSalah: 3
 --- !u!95 &8167929174713658114
 Animator:
   serializedVersion: 7

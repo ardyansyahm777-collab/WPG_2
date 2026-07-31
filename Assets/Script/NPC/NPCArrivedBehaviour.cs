@@ -1,16 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// StateMachineBehaviour — pasang di STATE NPC_IN di Animator Controller.
-/// Otomatis memanggil OnArrivedAtService() saat animasi NPC_IN selesai.
-///
-/// CARA PASANG (tanpa Animation Event):
-///   1. Buka Animator window
-///   2. Klik state "NPC_IN"
-///   3. Di Inspector, klik "Add Behaviour"
-///   4. Pilih NPCArrivedBehaviour
-///   Selesai — tidak perlu edit clip animasi sama sekali.
-/// </summary>
 public class NPCArrivedBehaviour : StateMachineBehaviour
 {
     private bool sudahDipanggil = false;
