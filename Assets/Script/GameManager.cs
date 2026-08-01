@@ -3,6 +3,8 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     [Header("Game Loop")]
     public int currentDay = 1;
     public int maxDay     = 7; // Disesuaikan untuk 7 hari naratif
@@ -18,10 +20,26 @@ public class GameManager : MonoBehaviour
     [Header("Referensi Script UI Laporan")]
     public LaporanHarianUI laporanHarianScript; 
 
+    void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
         if (winPanel  != null) winPanel.SetActive(false);
         if (losePanel != null) losePanel.SetActive(false);
+    }
+
+    /// <summary>
+    /// Panggil ini dari script mana pun saat kondisi kalah terpenuhi.
+    /// Contoh: GameManager.Instance.LoseGame("Logistik habis sebelum Hari 7 selesai");
+    /// </summary>
+    public void LoseGame(string alasanKalah)
+    {
+        if (losePanel != null) losePanel.SetActive(true);
+        if (txtAlasanKalah != null) txtAlasanKalah.text = alasanKalah;
+        Time.timeScale = 0f;
     }
 
     public void NextDay(int targetHari)

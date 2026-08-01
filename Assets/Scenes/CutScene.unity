@@ -1191,6 +1191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b636d6205ddccbc4db5bdad94bfc8aef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DayTransitionManager
+  tutorialSceneName: Tutorial
   cutsceneSceneName: CutScene
   gameplaySceneName: GamePlay
   fadeImage: {fileID: 893011016}

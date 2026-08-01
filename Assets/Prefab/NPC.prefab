@@ -292,7 +292,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7033b056ba68d684896a02a0b201aeb3, type: 3}
+  m_Sprite: {fileID: -7397115453976037101, guid: 7538349f473f98040bcc6d12321ccece, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -361,7 +361,10 @@ MonoBehaviour:
   kupon:
     nomorRegistrasi: 
     namaPengungsi: 
+    nik: 
+    tanggalLahir: 
     tanggalTerbit: 
+    fotoKupon: {fileID: 0}
     stempelSprite: {fileID: 0}
     asli: 0
     kecacatan: 0

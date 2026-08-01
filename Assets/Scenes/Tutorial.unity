@@ -524,6 +524,7 @@ GameObject:
   - component: {fileID: 788301302}
   - component: {fileID: 788301301}
   - component: {fileID: 788301300}
+  - component: {fileID: 788301303}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -605,6 +606,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &788301303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788301299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!1 &826586770
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,40 +1234,86 @@ MonoBehaviour:
   txtDialog: {fileID: 2055214565}
   imgKarakter: {fileID: 1947910113}
   imgPetunjukTutor: {fileID: 111226318}
+  imgBackground: {fileID: 0}
+  warnaBicara: {r: 1, g: 1, b: 1, a: 1}
+  warnaDiam: {r: 0.55, g: 0.55, b: 0.55, a: 1}
+  panelPilihan: {fileID: 0}
+  tombolPilihan: []
+  txtTombolPilihan: []
   ceritaTutorial:
   - namaKarakter: Hartono
     isiDialog: Perkenalkan, nama saya Hartono. Saya akan memandumu dalam mengelola
       distribusi bantuan ini.
-    spriteKarakter: {fileID: 3106801482024876145, guid: eb0ceb50bbb09244a9d2941862de1b02, type: 3}
+    spriteKarakter: {fileID: -9212613033288081154, guid: 5beb9ec7de96b40459489b53c44a3b87, type: 3}
     spritePetunjuk: {fileID: 0}
     aktifkanPetunjuk: 0
+    karakterUtamaSedangBicara: 0
+    spriteBackground: {fileID: 0}
+    karakterTambahan: []
+    objekUntukDiaktifkan: []
+    objekUntukDinonaktifkan: []
+    bgmBaris: {fileID: 0}
+    sfxBaris: {fileID: 0}
+    pilihan: []
   - namaKarakter: Hartono
     isiDialog: Setiap hari, para warga yang terdampak bencana akan berdatangan ke
       posko. Perhatikan dengan saksama bentuk bantuan spesifik yang mereka butuhkan.
-    spriteKarakter: {fileID: 3106801482024876145, guid: eb0ceb50bbb09244a9d2941862de1b02, type: 3}
+    spriteKarakter: {fileID: -3836040018940765204, guid: e13076731f330014aa60627fccf4e051, type: 3}
     spritePetunjuk: {fileID: 0}
     aktifkanPetunjuk: 0
+    karakterUtamaSedangBicara: 0
+    spriteBackground: {fileID: 0}
+    karakterTambahan: []
+    objekUntukDiaktifkan: []
+    objekUntukDinonaktifkan: []
+    bgmBaris: {fileID: 0}
+    sfxBaris: {fileID: 0}
+    pilihan: []
   - namaKarakter: Hartono
     isiDialog: Apabila warga membutuhkan bahan pangan, tenda, atau kebutuhan pokok
       lainnya, kamu dapat mengambil persediaan tersebut pada tumpukan kotak Logistik
       di sisi kiri.
-    spriteKarakter: {fileID: -1570418648217650861, guid: 2cef1474e6a121147a4f4366fb590e15, type: 3}
+    spriteKarakter: {fileID: -7285560406362237603, guid: 59caf9b33cc963848bc5cd234b504b83, type: 3}
     spritePetunjuk: {fileID: -7141390267240789388, guid: ebfb0c5ebd54a134dba30b9ff5ce8f63, type: 3}
     aktifkanPetunjuk: 1
+    karakterUtamaSedangBicara: 0
+    spriteBackground: {fileID: 0}
+    karakterTambahan: []
+    objekUntukDiaktifkan: []
+    objekUntukDinonaktifkan: []
+    bgmBaris: {fileID: 0}
+    sfxBaris: {fileID: 0}
+    pilihan: []
   - namaKarakter: Hartono
     isiDialog: Namun, jika mereka mengalami cedera fisik dan membutuhkan obat-obatan,
       silakan ambil persediaan medis melalui laci kotak Medic yang berada di sisi
       kanan.
-    spriteKarakter: {fileID: -1570418648217650861, guid: 2cef1474e6a121147a4f4366fb590e15, type: 3}
+    spriteKarakter: {fileID: -9212613033288081154, guid: 5beb9ec7de96b40459489b53c44a3b87, type: 3}
     spritePetunjuk: {fileID: 2492674440536748339, guid: e29b94f83b60bff438f46008eddaee92, type: 3}
     aktifkanPetunjuk: 1
+    karakterUtamaSedangBicara: 0
+    spriteBackground: {fileID: 0}
+    karakterTambahan: []
+    objekUntukDiaktifkan: []
+    objekUntukDinonaktifkan: []
+    bgmBaris: {fileID: 0}
+    sfxBaris: {fileID: 0}
+    pilihan: []
   - namaKarakter: Hartono
     isiDialog: Di akhir giliran kerja, sistem akan menampilkan rangkuman Laporan
       Harian secara menyeluruh. Evaluasi sisa bantuan kita dengan baik, dan mari
       ringankan beban mereka.
-    spriteKarakter: {fileID: -1570418648217650861, guid: 2cef1474e6a121147a4f4366fb590e15, type: 3}
+    spriteKarakter: {fileID: -3836040018940765204, guid: e13076731f330014aa60627fccf4e051, type: 3}
     spritePetunjuk: {fileID: -2540885359669281544, guid: e9c3bec0a847e7349baf36cd3b843a00, type: 3}
     aktifkanPetunjuk: 1
+    karakterUtamaSedangBicara: 0
+    spriteBackground: {fileID: 0}
+    karakterTambahan: []
+    objekUntukDiaktifkan: []
+    objekUntukDinonaktifkan: []
+    bgmBaris: {fileID: 0}
+    sfxBaris: {fileID: 0}
+    pilihan: []
   typingSpeed: 0.04
   nextSceneName: CutScene
   delaySetelahMengetik: 1
@@ -1449,7 +1540,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 3106801482024876145, guid: eb0ceb50bbb09244a9d2941862de1b02, type: 3}
+  m_Sprite: {fileID: -7285560406362237603, guid: 59caf9b33cc963848bc5cd234b504b83, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
