@@ -167,49 +167,69 @@ public class NPC : MonoBehaviour
         if (sedangKeluar || keputusanSudahDiambil) return;
         keputusanSudahDiambil = true;
 
+        if (GameDataManager.Instance == null) return;
+
+        // KASUS 1: NPC Membawa Kupon Biasa (Non-Story)
         if (kupon != null)
         {
             bool keputusanBenar = (diterima == kupon.asli);
 
-            if (GameDataManager.Instance != null)
+            if (keputusanBenar)
             {
-                if (keputusanBenar) GameDataManager.Instance.kuponBenarHariIni++;
-                else GameDataManager.Instance.kuponSalahHariIni++;
-            }
+                GameDataManager.Instance.kuponBenarHariIni++;
 
-            // --- PENAMBAHAN SP JIKA KEPUTUSAN SALAH ---
-            if (!keputusanBenar)
-            {
-                if (RuleAndSPManager.Instance != null)
+                if (diterima)
                 {
-                    // Panggil SP Manager untuk menambah SP + memunculkan Animasi Notifikasi SP
-                    RuleAndSPManager.Instance.TambahSP(1);
+                    // Meloloskan dokumen sah
+                    GameDataManager.Instance.TambahMetrik(compliance: 1, humanity: 1);
+                }
+                else
+                {
+                    // Menolak dokumen palsu/mismatch dengan tepat
+                    GameDataManager.Instance.TambahMetrik(compliance: 1, humanity: 0);
+                }
+            }
+            else
+            {
+                GameDataManager.Instance.kuponSalahHariIni++;
+
+                if (diterima && !kupon.asli)
+                {
+                    // KASUS: Meloloskan Dokumen Palsu / Mismatch (Pelanggaran SOP)
+                    GameDataManager.Instance.TambahMetrik(compliance: -1, humanity: 0);
+
+                    // Tambah SP jika melanggar SOP
+                    if (RuleAndSPManager.Instance != null)
+                        RuleAndSPManager.Instance.TambahSP(1);
+                }
+                else if (!diterima && kupon.asli)
+                {
+                    // KASUS: Menolak Warga Berdokumen Sah
+                    GameDataManager.Instance.TambahMetrik(compliance: -1, humanity: -1);
                 }
             }
         }
-        else
+        // KASUS 2: NPC Khusus / Dilema Moral (Misal: Dokumen Robek/Hanyut tapi Butuh Obat Urgent)
+        else if (isStoryNPC)
         {
-            // Untuk NPC Cerita tanpa kupon
-            if (GameDataManager.Instance != null)
+            if (diterima)
             {
-                if (diterima) GameDataManager.Instance.TambahMetrik(compliance: -1, humanity: 1);
-                else GameDataManager.Instance.TambahMetrik(compliance: 1, humanity: -1);
+                // Pemain memilih Kemanusiaan (Melanggar aturan demi menolong)
+                GameDataManager.Instance.TambahMetrik(compliance: -1, humanity: 2);
+            }
+            else
+            {
+                // Pemain memilih Kepatuhan Birokrasi Keras
+                GameDataManager.Instance.TambahMetrik(compliance: 2, humanity: -1);
             }
         }
 
         if (diterima)
         {
             kuponDiterima = true;
-            if (GameDataManager.Instance != null)
-            {
-                GameDataManager.Instance.wargaDibantu++;
-                GameDataManager.Instance.totalWargaDibantu++;
-            }
+            GameDataManager.Instance.wargaDibantu++;
+            GameDataManager.Instance.totalWargaDibantu++;
         }
-
-        TampilkanBubble(diterima
-            ? "Terima kasih banyak, Mas!"
-            : (kupon != null && kupon.asli ? "Tapi kupon saya asli! Kenapa ditolak?" : "Baik, saya mengerti."));
 
         StartCoroutine(TriggerKeluarSetelahDelay(diterima ? 1.0f : 1.2f));
     }
