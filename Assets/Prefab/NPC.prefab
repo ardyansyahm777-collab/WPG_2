@@ -365,6 +365,16 @@ MonoBehaviour:
     stempelSprite: {fileID: 0}
     asli: 0
     kecacatan: 0
+  daftarVoucher: []
+  ktp:
+    nama: 
+    umur: 0
+    tanggalLahir: 
+    nik: 
+    jenisKelamin: 0
+    asalDaerah: 
+    fotoKTP: {fileID: 0}
+    fotoRobek: 0
   bubbleChatObject: {fileID: 232230174006914137}
   bubbleChatText: {fileID: 8679403219557319185}
   avatarImage: {fileID: 6728207925742584164}

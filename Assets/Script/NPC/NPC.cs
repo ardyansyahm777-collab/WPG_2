@@ -2,19 +2,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic; // Wajib ditambahkan untuk List
 
 public class NPC : MonoBehaviour
 {
     [Header("Tipe NPC")]
-    [Tooltip("Centang jika ini adalah Tokoh Cerita Penting (Teuku Rahman, Nyak Meamunah, dr. Maya, dll)")]
     public bool isStoryNPC = false;
 
     [Header("Data & Dialog")]
     public KebutuhanSet kebutuhan;
     public DialogData daftarDialog;
     public KuponInfo kupon;
-    public VoucherInfo voucher;
+    public List<VoucherInfo> daftarVoucher = new List<VoucherInfo>();
     public KTPInfo ktp;
+    
 
     [Header("UI References")]
     public GameObject bubbleChatObject;
@@ -33,9 +34,6 @@ public class NPC : MonoBehaviour
     private VoucherPanelUI voucherPanelUI;
     private KTPPanelUI ktpPanelUI;
     private Animator anim;
-
-    // NPC keluar setelah keputusan Kupon (Kartu Bantuan) diambil - Voucher & KTP
-    // sekarang murni dokumen referensi (tanpa tombol), jadi tidak perlu ditunggu.
     private bool keputusanSudahDiambil = false;
 
     void Awake()
@@ -54,9 +52,6 @@ public class NPC : MonoBehaviour
         }
     }
 
-    // Fungsi Start() dan SetupRandomNPCData() DIHAPUS karena sinkronisasi
-    // gambar dan dokumen sekarang di-handle oleh NPCQueue saat Spawn.
-
     public void SetKebutuhan(KebutuhanSet data)
     {
         kebutuhan = data;
@@ -69,11 +64,7 @@ public class NPC : MonoBehaviour
         if (avatarImage != null && img != null) 
         {
             avatarImage.sprite = img;
-            
-            // Mengembalikan ukuran UI Image ke piksel asli gambar tanpa penyok
             avatarImage.SetNativeSize(); 
-
-            // Jaga agar opsi preserve aspect tetap aktif
             avatarImage.preserveAspect = true; 
         }
     }
@@ -83,9 +74,10 @@ public class NPC : MonoBehaviour
         if (!isStoryNPC) kupon = data;
     }
 
-    public void SetVoucher(VoucherInfo data)
+    // Fungsi baru untuk menerima daftar voucher
+    public void SetVouchers(List<VoucherInfo> dataList)
     {
-        if (!isStoryNPC) voucher = data;
+        if (!isStoryNPC) daftarVoucher = dataList;
     }
 
     public void SetKTP(KTPInfo data)
@@ -143,12 +135,15 @@ public class NPC : MonoBehaviour
         {
             TampilkanBubble(dialogFinal);
 
-            // Semua dokumen tampil BERSAMAAN. KTP & Voucher murni referensi
-            // (tanpa tombol) - pemain membandingkannya sendiri sebelum
-            // memutuskan Terima/Tolak di panel Kupon (Kartu Bantuan).
+            // Tampilkan dokumen lainnya
             ktpPanelUI?.Tampilkan(ktp);
             kuponPanelUI?.Tampilkan(this, kupon);
-            voucherPanelUI?.Tampilkan(voucher);
+            
+            // PASTIKAN BARIS INI MEMANGGIL DAFTAR VOUCHER
+            if (voucherPanelUI != null)
+            {
+                voucherPanelUI.TampilkanSemua(daftarVoucher);
+            }
         }
     }
 
@@ -174,19 +169,27 @@ public class NPC : MonoBehaviour
 
         if (kupon != null)
         {
-            bool benar = (diterima == kupon.asli);
+            bool keputusanBenar = (diterima == kupon.asli);
 
             if (GameDataManager.Instance != null)
             {
-                if (benar) GameDataManager.Instance.kuponBenarHariIni++;
+                if (keputusanBenar) GameDataManager.Instance.kuponBenarHariIni++;
                 else GameDataManager.Instance.kuponSalahHariIni++;
+            }
+
+            // --- PENAMBAHAN SP JIKA KEPUTUSAN SALAH ---
+            if (!keputusanBenar)
+            {
+                if (RuleAndSPManager.Instance != null)
+                {
+                    // Panggil SP Manager untuk menambah SP + memunculkan Animasi Notifikasi SP
+                    RuleAndSPManager.Instance.TambahSP(1);
+                }
             }
         }
         else
         {
-            // NPC tanpa dokumen sama sekali (mis. Teuku Rahman, dr. Maya) bukan
-            // kasus deteksi pemalsuan biasa - ini dilema compliance vs humanity,
-            // jadi dicatat lewat metrik ending, bukan skor benar/salah kupon.
+            // Untuk NPC Cerita tanpa kupon
             if (GameDataManager.Instance != null)
             {
                 if (diterima) GameDataManager.Instance.TambahMetrik(compliance: -1, humanity: 1);
@@ -197,6 +200,11 @@ public class NPC : MonoBehaviour
         if (diterima)
         {
             kuponDiterima = true;
+            if (GameDataManager.Instance != null)
+            {
+                GameDataManager.Instance.wargaDibantu++;
+                GameDataManager.Instance.totalWargaDibantu++;
+            }
         }
 
         TampilkanBubble(diterima

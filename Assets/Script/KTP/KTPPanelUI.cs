@@ -3,22 +3,16 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// Panel ini TIDAK punya tombol Terima/Tolak - KTP cuma dokumen referensi yang
-/// tampil BERSAMAAN dengan panel Kupon & Voucher supaya pemain bisa membandingkan
-/// datanya sendiri untuk mendeteksi kejanggalan. Kalau NPC tidak membawa KTP
-/// sama sekali (ktp == null), panel ini otomatis disembunyikan.
+/// Panel KTP sebagai dokumen referensi untuk verifikasi silang data.
 /// </summary>
 public class KTPPanelUI : MonoBehaviour
 {
-    [Header("UI References")]
+    [Header("UI References (Sesuai Hierarchy KTP)")]
     public GameObject panelKTP;
     public TextMeshProUGUI txtNama;
-    public TextMeshProUGUI txtUmur;
-    public TextMeshProUGUI txtTanggalLahir;
-    public TextMeshProUGUI txtNik;
-    public TextMeshProUGUI txtJenisKelamin;
-    public TextMeshProUGUI txtAsalDaerah;
-    public TextMeshProUGUI txtTanggalKedaluwarsa;
+    public TextMeshProUGUI txtKotaTglLahir; // Slot untuk GameObject 'kota_tgl lahir'
+    public TextMeshProUGUI txtGenderUmur;   // Slot untuk GameObject 'gender, umur'
+    public TextMeshProUGUI txtNik;          // Slot untuk GameObject 'nik'
     public Image imgFotoKTP;
 
     void Awake()
@@ -28,25 +22,34 @@ public class KTPPanelUI : MonoBehaviour
 
     public void Tampilkan(KTPInfo ktp)
     {
-        // NPC yang tidak membawa KTP (mis. Teuku Rahman, dokumennya hanyut) ->
-        // pastikan panel disembunyikan, bukan cuma dibiarkan di state terakhir.
         if (ktp == null)
         {
             Sembunyikan();
             return;
         }
 
-        if (txtNama != null) txtNama.text = ktp.nama;
-        if (txtUmur != null) txtUmur.text = $"{ktp.umur} Tahun";
-        if (txtTanggalLahir != null) txtTanggalLahir.text = ktp.tanggalLahir;
-        if (txtNik != null) txtNik.text = ktp.nik;
-        if (txtJenisKelamin != null) txtJenisKelamin.text = ktp.jenisKelamin == GenderType.Pria ? "Laki-laki" : "Perempuan";
-        if (txtAsalDaerah != null) txtAsalDaerah.text = ktp.asalDaerah;
-        if (txtTanggalKedaluwarsa != null) txtTanggalKedaluwarsa.text = ktp.tanggalKedaluwarsa;
+        // 1. Set Nama
+        if (txtNama != null) 
+            txtNama.text = ktp.nama;
 
+        // 2. Gabung Kota Asal dan Tanggal Lahir (Format: BANDA ACEH, 12-04-1980)
+        if (txtKotaTglLahir != null) 
+            txtKotaTglLahir.text = $"{ktp.asalDaerah.ToUpper()}, {ktp.tanggalLahir}";
+
+        // 3. Gabung Gender dan Umur (Format: LAKI-LAKI, 32 / PEREMPUAN, 32)
+        if (txtGenderUmur != null) 
+        {
+            string genderStr = (ktp.jenisKelamin == GenderType.Pria) ? "LAKI-LAKI" : "PEREMPUAN";
+            txtGenderUmur.text = $"{genderStr}, {ktp.umur}";
+        }
+
+        // 4. Set NIK
+        if (txtNik != null) 
+            txtNik.text = ktp.nik;
+
+        // 5. Set Foto KTP
         if (imgFotoKTP != null)
         {
-            // Foto robek -> kosongkan gambar (biar kelihatan "tidak bisa dicocokkan")
             imgFotoKTP.sprite = ktp.fotoRobek ? null : ktp.fotoKTP;
             imgFotoKTP.enabled = !ktp.fotoRobek && ktp.fotoKTP != null;
         }

@@ -60,9 +60,8 @@ public class NPCQueue : MonoBehaviour
     // =============================================
     void Start()
     {
-        // SOLUSI UTAMA: MulaiHari(0) DIHAPUS dari sini!
-        // Sekarang, antrean NPC hanya akan dipanggil secara presisi oleh CutsceneManager 
-        // setelah layar hitam transisi selesai memudar (Fade In).
+        // Antrean NPC akan dipanggil oleh CutsceneManager / GameManager
+        // setelah transisi selesai memudar (Fade In).
     }
 
     // =============================================
@@ -97,22 +96,18 @@ public class NPCQueue : MonoBehaviour
         }
         else
         {
-            // Set Kebutuhan Logistik/Medic bawaan[cite: 21]
+            // Set Kebutuhan Logistik/Medic bawaan
             npc.SetKebutuhan(generator.GetRandomKebutuhan());
 
-            // Ambil Gambar & Dokumen yang SINKRON dari DocumentDataGenerator
             if (DocumentDataGenerator.Instance != null)
             {
-                // 1. Ambil Profile Visual (Sprite + Gender + Usia)
                 NPCRandomProfile profile = DocumentDataGenerator.Instance.GetRandomProfile();
 
                 if (profile != null)
                 {
-                    // Set Visual Gambar NPC
                     npc.SetVisual(profile.avatarSprite);
 
-                    // Generate Kupon & KTP SEKALIGUS dari nama/tanggal lahir yang SAMA,
-                    // supaya kedua dokumen konsisten (bisa dibandingkan pemain).
+                    // Generate Kupon & KTP Sinkron dari DocumentDataGenerator
                     DocumentDataGenerator.Instance.GenerateNPCDocuments(
                         profile, generator.indexHariSekarang + 1,
                         out KuponInfo matchedKupon, out KTPInfo matchedKtp);
@@ -123,16 +118,23 @@ public class NPCQueue : MonoBehaviour
             }
             else
             {
-                // Fallback jika DocumentDataGenerator tidak ada[cite: 21]
+                // Fallback jika DocumentDataGenerator tidak ada
                 npc.SetVisual(generator.GetRandomSprite());
-                npc.SetKupon(kuponGenerator.Generate(generator.indexHariSekarang + 1));
+                if (kuponGenerator != null)
+                {
+                    npc.SetKupon(kuponGenerator.Generate(generator.indexHariSekarang + 1));
+                }
             }
 
-            // Generate voucher (kupon sembako/medis) sebagai dokumen referensi.
-            // Nomor registrasinya WAJIB sama dengan Kupon (Kartu Bantuan) di atas.
+            // Generate MULTIPLE VOUCHER (kupon sembako/medis) berdasarkan kebutuhan NPC
             if (voucherGenerator != null && npc.kupon != null)
             {
-                npc.SetVoucher(voucherGenerator.Generate(generator.indexHariSekarang + 1, npc.kupon.nomorRegistrasi));
+                List<VoucherInfo> generatedVouchers = voucherGenerator.GenerateVouchersForNPC(
+                    generator.indexHariSekarang + 1, 
+                    npc.kupon.nomorRegistrasi, 
+                    npc.kebutuhan
+                );
+                npc.SetVouchers(generatedVouchers);
             }
         }
 

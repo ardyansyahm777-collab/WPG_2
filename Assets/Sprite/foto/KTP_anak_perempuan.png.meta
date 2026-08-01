@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4f91d1c5630ccd0409c1bbc10f4bee1b
+guid: a14c45048aa170849bd8281969f14a0e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7443756053782179069
-    second: background_0
+      213: -8682787872540123240
+    second: KTP_anak_perempuan_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: background_0
+      name: KTP_anak_perempuan_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 3840
-        height: 2160
+        width: 772
+        height: 1018
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 30356abce4772b890800000000000000
-      internalID: -7443756053782179069
+      spriteID: 89f1d2dee6a808780800000000000000
+      internalID: -8682787872540123240
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 1560eb17f4029de4f8b3b278ee8ce4f4
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      background_0: -7443756053782179069
+      KTP_anak_perempuan_0: -8682787872540123240
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

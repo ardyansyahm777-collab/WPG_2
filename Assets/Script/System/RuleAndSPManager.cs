@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 using System.Collections.Generic;
 
 public class RuleAndSPManager : MonoBehaviour
@@ -10,20 +11,29 @@ public class RuleAndSPManager : MonoBehaviour
     public int jumlahSPSaatIni = 0;
     public int maxSP = 3; 
 
-    [Header("UI Display Rulebook")]
+    [Header("UI Display Rulebook & SP")]
     public TextMeshProUGUI txtRulebookHarian;
     public TextMeshProUGUI txtStatusSP;
     public GameObject panelGameOverSP; 
 
+    [Header("Notifikasi Animasi SP (Advanced UI)")]
+    [Tooltip("Assign GameObject 'peringatan_SP' dari Hierarchy yang memiliki skrip AdvancedUIAnimation")]
+    public GameObject panelNotifikasiSP;
+
+    [Tooltip("Durasi notifikasi SP tampil di layar sebelum turun kembali (detik)")]
+    public float durasiTampilSP = 3.0f;
+
+    private Coroutine routineNotifSP;
+
     private Dictionary<int, string> daftarAturanHarian = new Dictionary<int, string>()
     {
-        { 1, "• KTP yang kedaluwarsa sebelum 26 Des 2004 TIDAK VALID." },
-        { 2, "• DILARANG meloloskan warga luar Aceh tanpa stempel Posko Pusat." },
-        { 3, "• DILARANG menerima Kupon/Kertas Hitam dengan stempel pudar." },
-        { 4, "• DILARANG memberikan bantuan mewakili orang lain (1 KTP = 1 Orang)." },
-        { 5, "• CRISIS! DILARANG memberikan Paket Medis tanpa Kupon Merah." },
-        { 6, "• BADAI SUSULAN! DILARANG meloloskan dokumen yang memiliki Typo Nama." },
-        { 7, "• DARURAT! Bantuan HANYA untuk warga lokal yang cedera berat." }
+        { 1, "Periksa nama yang ada didalam dengan cermat" },
+        { 2, "DILARANG meloloskan warga luar Aceh tanpa stempel Posko Pusat." },
+        { 3, "DILARANG menerima Kupon/Kertas Hitam dengan stempel pudar/palsu." },
+        { 4, "DILARANG memberikan bantuan jika Foto KTP tidak cocok dengan warga." },
+        { 5, "CRISIS! DILARANG memberikan Paket Medis tanpa Kupon/Voucher Medis." },
+        { 6, "BADAI SUSULAN! DILARANG meloloskan dokumen yang memiliki Typo Nama/NIK." },
+        { 7, "DARURAT! Bantuan HANYA untuk warga lokal yang mengalami cedera/membawa dokumen sah." }
     };
 
     private void Awake()
@@ -35,6 +45,7 @@ public class RuleAndSPManager : MonoBehaviour
     private void Start()
     {
         if (panelGameOverSP != null) panelGameOverSP.SetActive(false);
+        if (panelNotifikasiSP != null) panelNotifikasiSP.SetActive(false);
         UpdateSPUI();
     }
 
@@ -42,13 +53,13 @@ public class RuleAndSPManager : MonoBehaviour
     {
         if (txtRulebookHarian == null) return;
 
-        string teksRulebook = "<b>=== PERATURAN & LARANGAN HARI INI ===</b>\n\n";
+        string teksRulebook = ""; 
 
         for (int i = 1; i <= hariSekarang; i++)
         {
             if (daftarAturanHarian.ContainsKey(i))
             {
-                teksRulebook += $"<b>[HARI {i}]</b>\n" + daftarAturanHarian[i] + "\n\n";
+                teksRulebook += daftarAturanHarian[i] + "\n";
             }
         }
 
@@ -62,10 +73,48 @@ public class RuleAndSPManager : MonoBehaviour
 
         UpdateSPUI();
 
+        // Tampilkan animasi notifikasi SP naik -> tunggu 3 detik -> turun
+        if (routineNotifSP != null) StopCoroutine(routineNotifSP);
+        routineNotifSP = StartCoroutine(RoutineAnimasiNotifSP());
+
         if (jumlahSPSaatIni >= maxSP)
         {
-            TriggerGameOverPecat();
+            Invoke(nameof(TriggerGameOverPecat), 1.5f);
         }
+    }
+
+    /// <summary>
+    /// Coroutine untuk memunculkan notifikasi SP (PlayIn), menahannya selama 3 detik,
+    /// lalu menurunkannya kembali (PlayOut).
+    /// </summary>
+    private IEnumerator RoutineAnimasiNotifSP()
+    {
+        if (panelNotifikasiSP == null) yield break;
+
+        panelNotifikasiSP.SetActive(true);
+        AdvancedUIAnimation anim = panelNotifikasiSP.GetComponent<AdvancedUIAnimation>();
+
+        if (anim != null)
+        {
+            // 1. Naikkan / Munculkan Notifikasi
+            anim.PlayIn(); 
+
+            // 2. Tunggu selama durasi animasi masuk + jeda 3 detik
+            yield return new WaitForSeconds(anim.duration + durasiTampilSP);
+
+            // 3. Turunkan / Sembunyikan Notifikasi
+            anim.PlayOut();
+
+            // 4. Tunggu hingga animasi keluar selesai, baru nonaktifkan GameObject
+            yield return new WaitForSeconds(anim.duration);
+        }
+        else
+        {
+            yield return new WaitForSeconds(durasiTampilSP);
+        }
+
+        panelNotifikasiSP.SetActive(false);
+        routineNotifSP = null;
     }
 
     private void UpdateSPUI()

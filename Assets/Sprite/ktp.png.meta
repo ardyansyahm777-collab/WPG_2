@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: 0b1ada366f2d01a459b9e91436cc46d4
+guid: 1c94f167b4660ac4c9246aea65c9c98d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5598840442115517898
-    second: binder_0
-  - first:
-      213: 555402103772711234
-    second: binder_1
-  - first:
-      213: -521596840838348244
-    second: binder_2
-  - first:
-      213: 7573870007015317652
-    second: binder_3
+      213: -6815538602173456958
+    second: ktp_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -135,89 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: binder_0
+      name: ktp_0
       rect:
         serializedVersion: 2
-        x: 39
-        y: 85
-        width: 1431
-        height: 928
+        x: 0
+        y: 0
+        width: 1438
+        height: 903
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: acde26ad7b313bd40800000000000000
-      internalID: 5598840442115517898
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: binder_1
-      rect:
-        serializedVersion: 2
-        x: 82
-        y: 94
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 24980ee454f25b700800000000000000
-      internalID: 555402103772711234
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: binder_2
-      rect:
-        serializedVersion: 2
-        x: 130
-        y: 111
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c224dd1df6ae2c8f0800000000000000
-      internalID: -521596840838348244
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: binder_3
-      rect:
-        serializedVersion: 2
-        x: 1041
-        y: 111
-        width: 6
-        height: 7
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 490222fa4aacb1960800000000000000
-      internalID: 7573870007015317652
+      spriteID: 2cd1d7860c75a61a0800000000000000
+      internalID: -6815538602173456958
       vertices: []
       indices: 
       edges: []
@@ -226,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9e3f4482f24e61b44b643dd57e8831af
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -236,10 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      binder_0: 5598840442115517898
-      binder_1: 555402103772711234
-      binder_2: -521596840838348244
-      binder_3: 7573870007015317652
+      ktp_0: -6815538602173456958
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

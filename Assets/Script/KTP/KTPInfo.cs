@@ -19,8 +19,6 @@ public class KTPInfo
     public GenderType jenisKelamin;
     [Tooltip("Kota/daerah asal penerbitan KTP, mis. 'Banda Aceh', 'Meulaboh', 'Jawa Tengah'.")]
     public string asalDaerah;
-    [Tooltip("Format dd-MM-yyyy. Kosongkan kalau KTP tidak punya tanggal kedaluwarsa.")]
-    public string tanggalKedaluwarsa;
 
     [Header("Foto KTP")]
     public Sprite fotoKTP;

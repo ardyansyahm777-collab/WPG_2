@@ -1,43 +1,70 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
-/// <summary>
-/// Voucher sekarang MURNI dokumen bukti pendukung (kayak KTP) - TIDAK ADA
-/// tombol Terima/Tolak. Keputusan terima/tolak permintaan bantuan dilakukan
-/// lewat panel Kupon (Kartu Bantuan); voucher ini cuma bukti yang harus
-/// dicocokkan pemain sendiri sesuai aturan rulebook (mis. "jangan terima
-/// kalau voucher tidak ada atau kotor").
-/// </summary>
 public class VoucherPanelUI : MonoBehaviour
 {
-    [Header("UI References")]
-    public GameObject panelVoucher;
-    public TextMeshProUGUI txtNomorRegistrasi;
-    public Image imgVoucher;
+    [Header("Panel Utama")]
+    public GameObject panelVoucherContainer;
+
+    [Header("Prefab Spawn Voucher")]
+    [Tooltip("Drag Prefab Item Voucher (yang memiliki skrip VoucherItemUI) ke sini")]
+    public GameObject voucherPrefab;
+
+    [Tooltip("Container tempat menampung voucher yang di-spawn (misal GameObject 'voucher' di Hierarchy)")]
+    public Transform voucherParentTransform;
+
+    private List<GameObject> activeVoucherInstances = new List<GameObject>();
 
     void Awake()
     {
-        if (panelVoucher != null) panelVoucher.SetActive(false);
+        if (panelVoucherContainer != null) panelVoucherContainer.SetActive(false);
     }
 
-    public void Tampilkan(VoucherInfo voucher)
+    public void TampilkanSemua(List<VoucherInfo> listVoucher)
     {
-        // NPC yang tidak membawa voucher -> pastikan panel tersembunyi
-        if (voucher == null)
+        ClearPreviousVouchers();
+
+        if (listVoucher == null || listVoucher.Count == 0)
         {
             Sembunyikan();
             return;
         }
 
-        if (txtNomorRegistrasi != null) txtNomorRegistrasi.text = voucher.nomorRegistrasi;
-        if (imgVoucher != null) imgVoucher.sprite = voucher.voucherSprite;
+        // PAKSA AKTIFKAN GAMEOBJECT / CONTAINER
+        if (panelVoucherContainer != null) panelVoucherContainer.SetActive(true);
+        gameObject.SetActive(true); 
 
-        if (panelVoucher != null) panelVoucher.SetActive(true);
+        Transform parentTarget = (voucherParentTransform != null) ? voucherParentTransform : transform;
+
+        foreach (VoucherInfo vInfo in listVoucher)
+        {
+            if (voucherPrefab != null)
+            {
+                GameObject newVoucherObj = Instantiate(voucherPrefab, parentTarget);
+                
+                VoucherItemUI itemUI = newVoucherObj.GetComponent<VoucherItemUI>();
+                if (itemUI != null)
+                {
+                    itemUI.Setup(vInfo);
+                }
+
+                activeVoucherInstances.Add(newVoucherObj);
+            }
+        }
     }
 
     public void Sembunyikan()
     {
-        if (panelVoucher != null) panelVoucher.SetActive(false);
+        ClearPreviousVouchers();
+        if (panelVoucherContainer != null) panelVoucherContainer.SetActive(false);
+    }
+
+    private void ClearPreviousVouchers()
+    {
+        foreach (GameObject vObj in activeVoucherInstances)
+        {
+            if (vObj != null) Destroy(vObj);
+        }
+        activeVoucherInstances.Clear();
     }
 }

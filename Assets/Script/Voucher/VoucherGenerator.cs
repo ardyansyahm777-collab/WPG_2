@@ -4,7 +4,6 @@ using UnityEngine;
 public class VoucherGenerator : MonoBehaviour
 {
     [Header("Database Sprite Voucher")]
-    [Tooltip("Isi tiap kombinasi Jenis (Logistik/Medis) x Kondisi (Bersih/Kotor) dengan sprite-nya masing-masing.")]
     public List<VoucherSpriteEntry> daftarSpriteVoucher = new List<VoucherSpriteEntry>();
 
     [Header("Peluang Voucher Kotor (0-1)")]
@@ -12,28 +11,39 @@ public class VoucherGenerator : MonoBehaviour
     [Range(0f, 0.2f)] public float tambahanPerHari = 0.05f;
 
     /// <summary>
-    /// Generate voucher untuk NPC. nomorRegistrasiKupon WAJIB diisi dengan nomor
-    /// registrasi Kupon (Kartu Bantuan) NPC yang sama, supaya kedua dokumen
-    /// punya nomor identik (bisa dicocokkan pemain).
+    /// Menghasilkan List Voucher yang disesuaikan dengan KUANTITAS KebutuhanSet milik NPC.
     /// </summary>
-    public VoucherInfo Generate(int hariSekarang, string nomorRegistrasiKupon)
+    public List<VoucherInfo> GenerateVouchersForNPC(int hariSekarang, string nomorRegistrasiKupon, KebutuhanSet kebutuhan)
+    {
+        List<VoucherInfo> listVoucher = new List<VoucherInfo>();
+        if (kebutuhan == null) return listVoucher;
+
+        float peluangKotor = Mathf.Clamp01(peluangKotorDasar + (hariSekarang - 1) * tambahanPerHari);
+
+        // 1. Loop sebanyak jumlah logistik yang dibutuhkan (misal logistik = 2, maka buat 2 voucher)
+        for (int i = 0; i < kebutuhan.logistik; i++)
+        {
+            VoucherInfo vLog = CreateSingleVoucher(nomorRegistrasiKupon, VoucherInfo.JenisVoucher.Logistik, peluangKotor);
+            listVoucher.Add(vLog);
+        }
+
+        // 2. Loop sebanyak jumlah firstAid/medis yang dibutuhkan
+        for (int i = 0; i < kebutuhan.firstAid; i++)
+        {
+            VoucherInfo vMed = CreateSingleVoucher(nomorRegistrasiKupon, VoucherInfo.JenisVoucher.Medis, peluangKotor);
+            listVoucher.Add(vMed);
+        }
+
+        return listVoucher;
+    }
+
+    private VoucherInfo CreateSingleVoucher(string nomorRegistrasi, VoucherInfo.JenisVoucher jenis, float peluangKotor)
     {
         VoucherInfo v = new VoucherInfo();
-        v.nomorRegistrasi = nomorRegistrasiKupon;
-
-        // Tentukan jenis voucher secara acak
-        v.jenis = (Random.value < 0.5f)
-            ? VoucherInfo.JenisVoucher.Logistik
-            : VoucherInfo.JenisVoucher.Medis;
-
-        // Hitung peluang kotor berdasarkan hari (makin lama makin sering kotor)
-        float peluangKotor = Mathf.Clamp01(peluangKotorDasar + (hariSekarang - 1) * tambahanPerHari);
-        v.kondisi = (Random.value < peluangKotor)
-            ? VoucherInfo.KondisiVoucher.Kotor
-            : VoucherInfo.KondisiVoucher.Bersih;
-
+        v.nomorRegistrasi = nomorRegistrasi;
+        v.jenis = jenis;
+        v.kondisi = (Random.value < peluangKotor) ? VoucherInfo.KondisiVoucher.Kotor : VoucherInfo.KondisiVoucher.Bersih;
         v.voucherSprite = CariSprite(v.jenis, v.kondisi);
-
         return v;
     }
 
@@ -50,7 +60,7 @@ public class VoucherGenerator : MonoBehaviour
             }
         }
 
-        Debug.LogWarning($"[VoucherGenerator] Sprite untuk kombinasi {jenis}/{kondisi} tidak ditemukan di 'Daftar Sprite Voucher'!");
+        Debug.LogWarning($"[VoucherGenerator] Sprite untuk kombinasi {jenis}/{kondisi} tidak ditemukan!");
         return null;
     }
 }
